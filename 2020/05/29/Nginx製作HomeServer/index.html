@@ -5,15 +5,25 @@
   
 
   
-  <title>den19980107</title>
+  <title>Nginx 製作 HomeServer | den19980107</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="den19980107">
-<meta property="og:url" content="https://den19980107.github.io/index.html">
+  <meta name="description" content="安裝 nginx  on 起你的 app (假設為一個 node server on 在 localhost:5000)  設定 nginx.conf (在下載下來的 nginx根目錄&#x2F;conf 裡面) 下面的設定檔的意思是監聽 port 80，如果有從 80 進來的，轉跳到 port 5000 1234567891011121314151617181920events&amp;#123;&amp;#125;h">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx 製作 HomeServer">
+<meta property="og:url" content="https://den19980107.github.io/2020/05/29/Nginx%E8%A3%BD%E4%BD%9CHomeServer/index.html">
 <meta property="og:site_name" content="den19980107">
+<meta property="og:description" content="安裝 nginx  on 起你的 app (假設為一個 node server on 在 localhost:5000)  設定 nginx.conf (在下載下來的 nginx根目錄&#x2F;conf 裡面) 下面的設定檔的意思是監聽 port 80，如果有從 80 進來的，轉跳到 port 5000 1234567891011121314151617181920events&amp;#123;&amp;#125;h">
 <meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/mZpd8Tz.png">
+<meta property="og:image" content="https://i.imgur.com/B99Zsid.png">
+<meta property="og:image" content="https://i.imgur.com/AbDUixm.png">
+<meta property="article:published_time" content="2020-05-29T12:50:48.000Z">
+<meta property="article:modified_time" content="2020-05-29T12:55:45.796Z">
 <meta property="article:author" content="den19980107">
+<meta property="article:tag" content="deploy">
+<meta property="article:tag" content="nginx">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/mZpd8Tz.png">
   
     <link rel="alternate" href="/atom.xml" title="den19980107" type="application/atom+xml">
   
@@ -62,162 +72,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-如何將node-js-app-部署到google-cloud-platform" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/05/29/%E5%A6%82%E4%BD%95%E5%B0%87node-js-app-%E9%83%A8%E7%BD%B2%E5%88%B0google-cloud-platform/" class="article-date">
-  <time datetime="2020-05-29T12:56:59.000Z" itemprop="datePublished">2020-05-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/29/%E5%A6%82%E4%BD%95%E5%B0%87node-js-app-%E9%83%A8%E7%BD%B2%E5%88%B0google-cloud-platform/">如何將node.js app 部署到google cloud platform</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="先決條件"><a href="#先決條件" class="headerlink" title="先決條件"></a>先決條件</h2><ul>
-<li>確認是否有 google cloud platform 付費會員或免費試用會員</li>
-<li>在平台中新增一個專案</li>
-</ul>
-<p><img src="https://i.imgur.com/dXyYPDq.jpg" alt=""></p>
-<ul>
-<li>安裝 gcloud sdk <a href="https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-245.0.0-darwin-x86_64.tar.gz" target="_blank" rel="noopener">下載網址</a></li>
-</ul>
-<p>可以在 terminal 輸入 gcloud 看看是否會輸出下面的畫面</p>
-<p><img src="https://i.imgur.com/EpimuOo.jpg" alt=""></p>
-<h2 id="開始部署"><a href="#開始部署" class="headerlink" title="開始部署"></a>開始部署</h2><ul>
-<li><ol>
-<li>cd 到要部署的專案底下並確定 npm start 可以正常運作</li>
-</ol>
-</li>
-<li><p>2.在專案的根目錄新增一個 app.yaml 的檔案並輸入下面的內容</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">runtime:</span> <span class="string">nodejs</span></span><br><span class="line"><span class="attr">env:</span> <span class="string">flex</span></span><br></pre></td></tr></table></figure></li>
-<li><p>3.在終端機 cd 至要部署的專案底下運行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcloud app deploy</span><br></pre></td></tr></table></figure></li>
-<li><p>4.選擇剛剛在 google cloud platfrom 上建立的專案<br><img src="https://i.imgur.com/az5Bmza.jpg" alt=""></p>
-</li>
-<li><p>5.如果部署成果的話在終端機輸入</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcloud app browse</span><br></pre></td></tr></table></figure>
-<p>應該就可以打開我們的專案了</p>
-</li>
-</ul>
-<h2 id="相關文章"><a href="#相關文章" class="headerlink" title="相關文章"></a>相關文章</h2><p><a href="https://cloud.google.com/appengine/docs/flexible/nodejs/testing-and-deploying-your-app?hl=zh-tw" target="_blank" rel="noopener">google doc</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://den19980107.github.io/2020/05/29/%E5%A6%82%E4%BD%95%E5%B0%87node-js-app-%E9%83%A8%E7%BD%B2%E5%88%B0google-cloud-platform/" data-id="ckas7osv90004if9kftbx05fz" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/deploy/" rel="tag">deploy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/google-cloud-platform/" rel="tag">google cloud platform</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/" rel="tag">nodejs</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Heroku部署mern-stack-app" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/05/29/Heroku%E9%83%A8%E7%BD%B2mern-stack-app/" class="article-date">
-  <time datetime="2020-05-29T12:55:24.000Z" itemprop="datePublished">2020-05-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/29/Heroku%E9%83%A8%E7%BD%B2mern-stack-app/">Heroku 部署 mern stackapp</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="in-package-json-add-below"><a href="#in-package-json-add-below" class="headerlink" title="in package.json add below"></a>in package.json add below</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"scripts": &#123;</span><br><span class="line">    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm run build &amp;&amp; npm install --prefix client &amp;&amp; npm run build --prefix client"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>NPM_CONFIG_PRODUCTION=false<br>  為了讓 heroku 執行這段 postbuild 需要將 env 改成不是 production</li>
-<li>npm run build<br>  如果 server 端是用 typescript 做的就要加這行先編譯 server 端</li>
-<li>npm install –prefix client &amp;&amp; npm run build –prefix client”<br>  如果前端是 react 或其他前端框架就要讓前端也先編譯好</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://den19980107.github.io/2020/05/29/Heroku%E9%83%A8%E7%BD%B2mern-stack-app/" data-id="ckas7osuu0000if9k58d426kk" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/deploy/" rel="tag">deploy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/heroku/" rel="tag">heroku</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Nginx無法傳輸大檔案問題" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/05/29/Nginx%E7%84%A1%E6%B3%95%E5%82%B3%E8%BC%B8%E5%A4%A7%E6%AA%94%E6%A1%88%E5%95%8F%E9%A1%8C/" class="article-date">
-  <time datetime="2020-05-29T12:54:10.000Z" itemprop="datePublished">2020-05-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/29/Nginx%E7%84%A1%E6%B3%95%E5%82%B3%E8%BC%B8%E5%A4%A7%E6%AA%94%E6%A1%88%E5%95%8F%E9%A1%8C/">Nginx 無法傳輸大檔案問題</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在做 icoding 的時候常常會需要上傳影片到平台上，本機測試的時候影片可以上傳成功，但當網站部署到伺服器後，上傳影片卻失敗，資料庫一直沒有出現影片的資料</p>
-<h2 id="前端噴的錯誤訊息"><a href="#前端噴的錯誤訊息" class="headerlink" title="前端噴的錯誤訊息"></a>前端噴的錯誤訊息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">413 Request Entity Too Large</span><br></pre></td></tr></table></figure>
-
-<h2 id="問題原因："><a href="#問題原因：" class="headerlink" title="問題原因："></a>問題原因：</h2><p>在 nginx 中有預設可上傳檔案的大小2M，如果今天影片超過此大小便會上傳不成功</p>
-<h2 id="解決辦法："><a href="#解決辦法：" class="headerlink" title="解決辦法："></a>解決辦法：</h2><p>在 nginx.conf 檔案中 http，server 或者 location 段中加入以下指令，可調整 nginx 可接受的檔案大小</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># set client body size to 8M #</span><br><span class="line">client_max_body_size 8M;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://den19980107.github.io/2020/05/29/Nginx%E7%84%A1%E6%B3%95%E5%82%B3%E8%BC%B8%E5%A4%A7%E6%AA%94%E6%A1%88%E5%95%8F%E9%A1%8C/" data-id="ckas7osuz0001if9k4jkc1zbp" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/deploy/" rel="tag">deploy</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nginx/" rel="tag">nginx</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Nginx製作HomeServer" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Nginx製作HomeServer" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/05/29/Nginx%E8%A3%BD%E4%BD%9CHomeServer/" class="article-date">
   <time datetime="2020-05-29T12:50:48.000Z" itemprop="datePublished">2020-05-29</time>
@@ -230,8 +85,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/05/29/Nginx%E8%A3%BD%E4%BD%9CHomeServer/">Nginx 製作 HomeServer</a>
+    <h1 class="article-title" itemprop="name">
+      Nginx 製作 HomeServer
     </h1>
   
 
@@ -280,11 +135,23 @@
     </footer>
   </div>
   
-</article>
-
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/29/Nginx%E7%84%A1%E6%B3%95%E5%82%B3%E8%BC%B8%E5%A4%A7%E6%AA%94%E6%A1%88%E5%95%8F%E9%A1%8C/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Nginx 無法傳輸大檔案問題
+        
+      </div>
+    </a>
+  
+  
+</nav>
 
   
-
+</article>
 
 </section>
         
