@@ -170,7 +170,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-05-29 21:32:06 / Modified: 21:32:30" itemprop="dateCreated datePublished" datetime="2020-05-29T21:32:06+08:00">2020-05-29</time>
+              <time title="Created: 2020-05-29 21:32:06 / Modified: 21:44:30" itemprop="dateCreated datePublished" datetime="2020-05-29T21:32:06+08:00">2020-05-29</time>
             </span>
 
           
@@ -194,19 +194,14 @@
 </ul>
 <p><code>docker ps</code> 確定有執行</p>
 <p><img src="https://i.imgur.com/So0EKyn.png" alt=""></p>
-<p>我們用映象檔 mongo:4.1 建立了名為 mongo4 的容器，掛載 hello-mongo 根目錄下的 data 資料夾到容器內。容器在背景執行，且對外的 port 號是 27017。當容器停止後自行移除。</p>
-<ul>
-<li><p>確認 mongodb 資料庫有運行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec mongo4 mongo --eval &quot;print(version())&quot;</span><br></pre></td></tr></table></figure>
-<p><img src="https://i.imgur.com/OoVs368.png" alt=""></p>
-</li>
-<li><p>若需要停止容器 (關掉 mongodb 資料庫)，請輸入</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop mongo4</span><br></pre></td></tr></table></figure>
-
-<h2 id="文章連結"><a href="#文章連結" class="headerlink" title="文章連結"></a>文章連結</h2><p><a href="https://ithelp.ithome.com.tw/articles/10201657?sc=iThelpR" target="_blank" rel="noopener">https://ithelp.ithome.com.tw/articles/10201657?sc=iThelpR</a></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/05/29/2020-05-29-%E5%9C%A8Docker%E4%B8%8A%E4%BD%BF%E7%94%A8mongodb/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -250,7 +245,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-05-29 21:30:46 / Modified: 21:31:39" itemprop="dateCreated datePublished" datetime="2020-05-29T21:30:46+08:00">2020-05-29</time>
+              <time title="Created: 2020-05-29 21:30:46 / Modified: 21:45:17" itemprop="dateCreated datePublished" datetime="2020-05-29T21:30:46+08:00">2020-05-29</time>
             </span>
 
           
@@ -270,19 +265,15 @@
 <h1 id="介紹"><a href="#介紹" class="headerlink" title="介紹"></a>介紹</h1><p>這個 load balance 是將專案放在 docker 上並且用 docker 上的 nginx 做成 load balance</p>
 <h1 id="開始"><a href="#開始" class="headerlink" title="開始"></a>開始</h1><ul>
 <li>在專案底下新增一個 nginx 的資料夾，並在裡面新增2個檔案</li>
-<li>第一個檔案是 Dockerfile   <figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> nginx <span class="comment"># 從 docker hub 抓 nginx 進來</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> rm /etc/nginx/conf.d/default.conf <span class="comment"># 把默認的 config 刪掉</span></span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> nginx.conf /etc/nginx/conf.d/default.conf <span class="comment"># 把 專案/nginx 下的 nginx.config 複製到 container 中的 /etc/nginx/conf.d/ 並改名為 default.conf,nginx.config 就是等等下面新增的那個</span></span></span><br></pre></td></tr></table></figure></li>
-<li>第二個檔案是 nginx.conf  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">upstream loadbalance &#123;</span><br><span class="line">    least_conn;</span><br><span class="line">    server 192.168.2.85:3000; # 前面是你本機的 ip 後面是你的專案在 container 中 on 的 port</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">server &#123;</span><br><span class="line">    location &#x2F; &#123;</span><br><span class="line">        proxy_pass http:&#x2F;&#x2F;loadbalance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>把 nginx 的 image 產生起來<br>  cd 到剛剛新增的 nginx 資料夾並輸入<code>docker build -t [username]/[imageName]</code> 像下面那樣  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t den19980107&#x2F;load-balance .</span><br></pre></td></tr></table></figure></li>
-<li>再來回到專案根目錄新增一個 docker-compose.yml 的檔案  <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'3'</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">nodeapp:</span></span><br><span class="line">   <span class="attr">image:</span> <span class="string">den19980107/ldl</span> <span class="comment"># 原本專案的 image</span></span><br><span class="line">   <span class="attr">ports:</span></span><br><span class="line">     <span class="bullet">-</span> <span class="number">3000</span><span class="string">:3000</span> <span class="comment"># 原本專案使用的 port</span></span><br><span class="line">   <span class="attr">deploy:</span></span><br><span class="line">     <span class="attr">replicas:</span> <span class="number">15</span> <span class="comment"># 複製15個 ldl</span></span><br><span class="line">     <span class="attr">restart_policy:</span> <span class="comment"># 當下面的 condition 時</span></span><br><span class="line">       <span class="attr">max_attempts:</span> <span class="number">3</span> <span class="comment"># 一次重啟 3 個 ldl</span></span><br><span class="line">       <span class="attr">condition:</span> <span class="string">on-failure</span> <span class="comment"># 當 sever 爆了      </span></span><br><span class="line">     <span class="attr">update_config:</span> <span class="comment"># 當更新時</span></span><br><span class="line">       <span class="attr">parallelism:</span> <span class="number">3</span> <span class="comment"># 一次關掉 3 個來更新 在啟動他們 3 個</span></span><br><span class="line">       <span class="attr">delay:</span> <span class="string">10s</span> <span class="comment"># 每次啟動延遲10s</span></span><br><span class="line">   <span class="attr">networks:</span> </span><br><span class="line">    <span class="bullet">-</span> <span class="string">balance</span> </span><br><span class="line"></span><br><span class="line">  <span class="attr">proxy:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">den19980107/load-balance</span> <span class="comment"># nginx 的 image 名稱</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="number">80</span><span class="string">:80</span> <span class="comment"># 使用 80 port</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">nodeapp</span> <span class="comment"># 依賴我們原本的專案</span></span><br><span class="line">    <span class="attr">deploy:</span></span><br><span class="line">      <span class="attr">placement:</span></span><br><span class="line">        <span class="attr">constraints:</span> <span class="string">[node.role</span> <span class="string">==</span> <span class="string">manager]</span></span><br><span class="line">    <span class="attr">networks:</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="string">balance</span></span><br><span class="line"></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line">  <span class="attr">balance:</span></span><br><span class="line">    <span class="attr">driver:</span> <span class="string">overlay</span></span><br></pre></td></tr></table></figure></li>
-<li>最後回到專案根目錄並輸入   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stack deploy -c docker-compose.yml [app名稱]</span><br></pre></td></tr></table></figure></li>
-<li>檢查有沒有 on 起來可以輸入   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker service ls</span><br></pre></td></tr></table></figure>
-  應該會看到類似下面的東西<br>  <img src="https://i.imgur.com/29C7AxR.png" alt=""></li>
-<li>如果想要把 service 刪掉的話可以輸入下面的指令，id 的看法就是 <code>docker service ls</code>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker service rm [node app id] [nginx load balance id]</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h1 id="參考文章"><a href="#參考文章" class="headerlink" title="參考文章"></a>參考文章</h1><p><a href="https://levelup.gitconnected.com/load-balance-and-scale-node-js-containers-with-nginx-and-docker-swarm-9fc97c3cff81" target="_blank" rel="noopener">https://levelup.gitconnected.com/load-balance-and-scale-node-js-containers-with-nginx-and-docker-swarm-9fc97c3cff81</a></p>
-
+<li>第一個檔案是 Dockerfile   <figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> nginx <span class="comment"># 從 docker hub 抓 nginx 進來</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> rm /etc/nginx/conf.d/default.conf <span class="comment"># 把默認的 config 刪掉</span></span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> nginx.conf /etc/nginx/conf.d/default.conf <span class="comment"># 把 專案/nginx 下的 nginx.config 複製到 container 中的 /etc/nginx/conf.d/ 並改名為 default.conf,nginx.config 就是等等下面新增的那個</span></span></span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/05/29/2020-05-29-Docker%E5%95%9F%E7%94%A8Load-Balance/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -326,7 +317,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-05-29 21:29:25 / Modified: 21:31:18" itemprop="dateCreated datePublished" datetime="2020-05-29T21:29:25+08:00">2020-05-29</time>
+              <time title="Created: 2020-05-29 21:29:25 / Modified: 21:45:21" itemprop="dateCreated datePublished" datetime="2020-05-29T21:29:25+08:00">2020-05-29</time>
             </span>
 
           
@@ -342,34 +333,15 @@
       
           <h2 id="先決條件"><a href="#先決條件" class="headerlink" title="先決條件"></a>先決條件</h2><ul>
 <li>需要先安裝 <a href="https://www.docker.com/products/docker-desktop" target="_blank" rel="noopener">docker</a><br>  在安裝完成後在終端機執行  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker</span><br></pre></td></tr></table></figure>
-  應該要看到有顯示類似下面的東西  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Usage:  docker [OPTIONS] COMMAND</span><br><span class="line"></span><br><span class="line">A self-sufficient runtime for containers</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">      --config string      Location of client config files (default &quot;&#x2F;Users&#x2F;den19980107&#x2F;.docker&quot;)</span><br><span class="line">  -c, --context string     Name of the context to use to connect to the daemon (overrides DOCKER_HOST env var and default context set with</span><br><span class="line">                           &quot;docker context use&quot;)</span><br><span class="line">  -D, --debug              Enable debug mode</span><br><span class="line">  -H, --host list          Daemon socket(s) to connect to</span><br><span class="line">  -l, --log-level string   Set the logging level (&quot;debug&quot;|&quot;info&quot;|&quot;warn&quot;|&quot;error&quot;|&quot;fatal&quot;) (default &quot;info&quot;)</span><br><span class="line">      --tls                Use TLS; implied by --tlsverify</span><br><span class="line">      --tlscacert string   Trust certs signed only by this CA (default &quot;&#x2F;Users&#x2F;den19980107&#x2F;.docker&#x2F;ca.pem&quot;)</span><br><span class="line">      --tlscert string     Path to TLS certificate fil</span><br></pre></td></tr></table></figure></li>
-<li>確定該 app run 的起來</li>
-<li>如果有用到 mongodb，monodb 的 url 不能用 localhost 應該要改成這樣  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongodb:&#x2F;&#x2F;localhost:27017 &#x3D;&gt; mongodb:&#x2F;&#x2F;mongo:27017&#x2F;online-compile</span><br></pre></td></tr></table></figure>
-  其中 mongo 是你 mongo image 的名稱 註：<code>mongodb image 名稱</code></li>
-</ul>
-<h2 id="將-app-部署到-docker-上"><a href="#將-app-部署到-docker-上" class="headerlink" title="將 app 部署到 docker 上"></a>將 app 部署到 docker 上</h2><ul>
-<li><p>首先在專案根目錄建立一個名為 Dockerfile 的檔案，並在裡面輸入以下內容</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"># 指定 node 版本 建議用現在本機的版本避免出錯</span><br><span class="line">FROM node:8.4.0-alpine</span><br><span class="line"></span><br><span class="line"># 設定這個 app 在 docker 上的工作目錄</span><br><span class="line">WORKDIR &#x2F;usr&#x2F;src&#x2F;app</span><br><span class="line"></span><br><span class="line"># 把 package.json 和 package.locl.json 複製到工作目錄中</span><br><span class="line">COPY package*.json .&#x2F; </span><br><span class="line"></span><br><span class="line"># -- 如果有使用到 bcrypt 或是任何需要 node-pre-gyp 提前編譯的套件需輸入下面的指令 --</span><br><span class="line"># 需要先安裝 python 到 container 上 node 才有辦法用 node-pre-gyp 預先編譯 bcrypt</span><br><span class="line">RUN apk --no-cache add --virtual builds-deps build-base python </span><br><span class="line"># 再重新編譯 bcrypt</span><br><span class="line">RUN npm rebuild bcrypt --build-from-source</span><br><span class="line"># ------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line"># install npm 套件</span><br><span class="line">RUN npm install </span><br><span class="line"></span><br><span class="line"># 把專案內的東西全部拷貝進 docker 的工作目錄中</span><br><span class="line">COPY . .</span><br><span class="line"></span><br><span class="line"># 設定 app 要對外的 port 此範例是 port 5000</span><br><span class="line">EXPOSE 5000</span><br><span class="line"></span><br><span class="line"># 設定執行時要 run 的指令 這邊就看你平常是怎麼把你的專案 on 起來的就輸入哪個</span><br><span class="line">CMD npm run production</span><br></pre></td></tr></table></figure></li>
-<li><p>再來一樣在專案目錄下建立一個名為 docker-compose.yml 的檔案</p>
-  <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'2'</span> <span class="comment"># docker-compose 版本</span></span><br><span class="line"><span class="attr">services:</span> <span class="comment"># 固定的不要改</span></span><br><span class="line">  <span class="attr">app:</span> <span class="comment"># 取你想取的名字代表這個 app</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">docker-online-compile</span> <span class="comment"># 這個 app run 起來後的 container 名稱 也是任意取</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span> <span class="comment"># 當出現問題壞掉時自動重啟</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">.</span> <span class="comment"># build 全部的東西</span></span><br><span class="line">    <span class="comment"># 指定 app 佔用的口 </span></span><br><span class="line">    <span class="attr">ports:</span> </span><br><span class="line">    <span class="comment">#左邊的 80 是 docker run 起來後本機要輸入 localhost:80 才看得到 app</span></span><br><span class="line">    <span class="comment">#右邊得則是你 app 原本 on 的 port 要跟 Dockerfile 的 EXPOSE 一樣</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">'80:5000'</span></span><br><span class="line">    <span class="comment"># 表示你的 app 需要依賴於 mongo 這邊的 mongo 就是 (1) 所寫的名稱</span></span><br><span class="line">    <span class="attr">links:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">mongo</span></span><br><span class="line">  <span class="attr">mongo:</span> <span class="comment">#(1)</span></span><br><span class="line">    <span class="comment"># mongodb 的 container 名稱</span></span><br><span class="line">    <span class="comment">#跟上面講的 [mongodb image 名稱] 一樣</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">mongo</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 因為我們不是自己安裝 mongodb</span></span><br><span class="line">    <span class="comment"># docker 會幫我們上網抓 mongo 的image下來</span></span><br><span class="line">    <span class="comment"># 那個 mongo image 的名稱就叫 mongo</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mongo</span></span><br><span class="line">    <span class="attr">ports:</span> <span class="comment"># mongo 的 port</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">'27017:27017'</span></span><br></pre></td></tr></table></figure></li>
-<li><p>一樣在根目錄下新增一個 .dockerignore 的檔案，功能跟 gitignore 一樣過濾掉一些不想傳到 docker 上的東西</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node_modules</span><br><span class="line">npm-debug.log</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>最後就可以在終端機執行</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up</span><br></pre></td></tr></table></figure>
-<p>  這樣就會看到一堆東西在跑，等到跑完之後就可以打開瀏覽器去 localhost:80 看看有沒有成功了</p>
-</li>
-<li><p>如果要關掉的話執行</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose down</span><br></pre></td></tr></table></figure>
-<h2 id="基本指令"><a href="#基本指令" class="headerlink" title="基本指令"></a>基本指令</h2></li>
-<li><p><code>docker images</code> 顯示本機所有已安裝的 images</p>
-</li>
-<li><p><code>docker image rm [image id] -f</code> 刪除 image by id</p>
-</li>
-<li><p><code>docker ps</code> 顯示所有 container</p>
-</li>
-</ul>
-
+  應該要看到有顯示類似下面的東西  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Usage:  docker [OPTIONS] COMMAND</span><br><span class="line"></span><br><span class="line">A self-sufficient runtime for containers</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">      --config string      Location of client config files (default &quot;&#x2F;Users&#x2F;den19980107&#x2F;.docker&quot;)</span><br><span class="line">  -c, --context string     Name of the context to use to connect to the daemon (overrides DOCKER_HOST env var and default context set with</span><br><span class="line">                           &quot;docker context use&quot;)</span><br><span class="line">  -D, --debug              Enable debug mode</span><br><span class="line">  -H, --host list          Daemon socket(s) to connect to</span><br><span class="line">  -l, --log-level string   Set the logging level (&quot;debug&quot;|&quot;info&quot;|&quot;warn&quot;|&quot;error&quot;|&quot;fatal&quot;) (default &quot;info&quot;)</span><br><span class="line">      --tls                Use TLS; implied by --tlsverify</span><br><span class="line">      --tlscacert string   Trust certs signed only by this CA (default &quot;&#x2F;Users&#x2F;den19980107&#x2F;.docker&#x2F;ca.pem&quot;)</span><br><span class="line">      --tlscert string     Path to TLS certificate fil</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/05/29/2020-05-29-%E5%A6%82%E4%BD%95%E5%9C%A8Docker%E5%95%9F%E5%8B%95%E4%B8%80%E5%80%8Bmern-stack-web-app/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -477,7 +449,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-05-29 21:25:37 / Modified: 21:26:11" itemprop="dateCreated datePublished" datetime="2020-05-29T21:25:37+08:00">2020-05-29</time>
+              <time title="Created: 2020-05-29 21:25:37 / Modified: 21:44:47" itemprop="dateCreated datePublished" datetime="2020-05-29T21:25:37+08:00">2020-05-29</time>
             </span>
 
           
@@ -542,7 +514,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-05-29 20:56:59 / Modified: 21:24:13" itemprop="dateCreated datePublished" datetime="2020-05-29T20:56:59+08:00">2020-05-29</time>
+              <time title="Created: 2020-05-29 20:56:59 / Modified: 21:44:09" itemprop="dateCreated datePublished" datetime="2020-05-29T20:56:59+08:00">2020-05-29</time>
             </span>
 
           
@@ -566,24 +538,14 @@
 </ul>
 <p>可以在 terminal 輸入 gcloud 看看是否會輸出下面的畫面</p>
 <p><img src="https://i.imgur.com/EpimuOo.jpg" alt=""></p>
-<h2 id="開始部署"><a href="#開始部署" class="headerlink" title="開始部署"></a>開始部署</h2><ul>
-<li><ol>
-<li>cd 到要部署的專案底下並確定 npm start 可以正常運作</li>
-</ol>
-</li>
-<li><p>2.在專案的根目錄新增一個 app.yaml 的檔案並輸入下面的內容</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">runtime:</span> <span class="string">nodejs</span></span><br><span class="line"><span class="attr">env:</span> <span class="string">flex</span></span><br></pre></td></tr></table></figure></li>
-<li><p>3.在終端機 cd 至要部署的專案底下運行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcloud app deploy</span><br></pre></td></tr></table></figure></li>
-<li><p>4.選擇剛剛在 google cloud platfrom 上建立的專案<br><img src="https://i.imgur.com/az5Bmza.jpg" alt=""></p>
-</li>
-<li><p>5.如果部署成果的話在終端機輸入</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcloud app browse</span><br></pre></td></tr></table></figure>
-<p>應該就可以打開我們的專案了</p>
-</li>
-</ul>
-<h2 id="相關文章"><a href="#相關文章" class="headerlink" title="相關文章"></a>相關文章</h2><p><a href="https://cloud.google.com/appengine/docs/flexible/nodejs/testing-and-deploying-your-app?hl=zh-tw" target="_blank" rel="noopener">google doc</a></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/05/29/2020-05-29_%E5%A6%82%E4%BD%95%E5%B0%87node-js-app-%E9%83%A8%E7%BD%B2%E5%88%B0google-cloud-platform/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -755,7 +717,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-05-29 20:50:48 / Modified: 21:24:27" itemprop="dateCreated datePublished" datetime="2020-05-29T20:50:48+08:00">2020-05-29</time>
+              <time title="Created: 2020-05-29 20:50:48 / Modified: 21:44:20" itemprop="dateCreated datePublished" datetime="2020-05-29T20:50:48+08:00">2020-05-29</time>
             </span>
 
           
@@ -775,30 +737,15 @@
 <li><p>on 起你的 app (假設為一個 node server on 在 localhost:5000)</p>
 </li>
 <li><p>設定 nginx.conf (在下載下來的 nginx根目錄/conf 裡面) 下面的設定檔的意思是監聽 port 80，如果有從 80 進來的，轉跳到 port 5000</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">events&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">http &#123;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen 80 default_server;</span><br><span class="line">        listen [::]:80 default_server;</span><br><span class="line">        server_name localhost;</span><br><span class="line">        # set client body size to 100M #</span><br><span class="line">        client_max_body_size 100M;</span><br><span class="line">        location &#x2F; &#123;</span><br><span class="line">                proxy_pass http:&#x2F;&#x2F;localhost:5000; #whatever port your app runs on</span><br><span class="line">                proxy_http_version 1.1;</span><br><span class="line">                proxy_set_header Upgrade $http_upgrade;</span><br><span class="line">                proxy_set_header Connection &#39;upgrade&#39;;</span><br><span class="line">                proxy_set_header Host $host;</span><br><span class="line">                proxy_cache_bypass $http_upgrade;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>重新載入 nginx 設定檔 輸入：<code>nginx -s reload</code></p>
-</li>
-<li><p>設定網關</p>
-<ol>
-<li><p>先確定伺服器主機接的網路線是最外層的路由器，不要接在 wifi 機上</p>
-</li>
-<li><p>在伺服器上的瀏覽器輸入 192.168.1.1 or 直接輸入伺服器 ip 會進入到路由器管理頁面如下圖：<br><img src="https://i.imgur.com/mZpd8Tz.png" alt=""></p>
-</li>
-<li><p>預設的帳號密碼是 user:user 登入後選擇 port forwarding<br><img src="https://i.imgur.com/B99Zsid.png" alt=""></p>
-</li>
-<li><p>把外網的 80 port 映射到內網的 80 port 給 nginx，nginx 會幫我們映射到內網的 5000 port<br> <img src="https://i.imgur.com/AbDUixm.png" alt=""></p>
-</li>
-</ol>
-</li>
-<li><p>使用 pm2 來監測執行情況，出錯時會自動重啟</p>
-<ol>
-<li>建立一個 pm2.json 在專案根目錄<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"apps"</span> : [&#123;</span><br><span class="line">    <span class="attr">"name"</span>: <span class="string">"short link"</span>, <span class="comment">// 在 pm2 裡面要叫什麼名字</span></span><br><span class="line">    <span class="attr">"cwd"</span>: <span class="string">"/home/paultsengapps/ShortLink"</span>, <span class="comment">// 到專案根目錄的位址</span></span><br><span class="line">    <span class="attr">"script"</span>    : <span class="string">"./dist/index.js"</span>, <span class="comment">// 要執行的程式</span></span><br><span class="line">    <span class="attr">"instances"</span> : <span class="string">"1"</span>, <span class="comment">// 要啟動幾個實體</span></span><br><span class="line">    <span class="attr">"exec_mode"</span> : <span class="string">"cluster"</span>,</span><br><span class="line">    <span class="attr">"env"</span>: &#123;</span><br><span class="line">      <span class="attr">"NODE_ENV"</span>: <span class="string">"development"</span>,</span><br><span class="line">      <span class="attr">"PORT"</span>: <span class="number">3000</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"env_production"</span> : &#123;</span><br><span class="line">       <span class="attr">"NODE_ENV"</span>: <span class="string">"production"</span>,</span><br><span class="line">       <span class="attr">"PORT"</span>: <span class="number">5000</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"log_date_format"</span>: <span class="string">"YYYY-MM-DD_HH:mm Z"</span>,</span><br><span class="line">    <span class="attr">"merge_logs"</span>: <span class="literal">true</span></span><br><span class="line">  &#125;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li>執行 <figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pm2 <span class="built_in">start</span> pm2.json --env production</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-</li>
-</ol>
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">events&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">http &#123;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen 80 default_server;</span><br><span class="line">        listen [::]:80 default_server;</span><br><span class="line">        server_name localhost;</span><br><span class="line">        # set client body size to 100M #</span><br><span class="line">        client_max_body_size 100M;</span><br><span class="line">        location &#x2F; &#123;</span><br><span class="line">                proxy_pass http:&#x2F;&#x2F;localhost:5000; #whatever port your app runs on</span><br><span class="line">                proxy_http_version 1.1;</span><br><span class="line">                proxy_set_header Upgrade $http_upgrade;</span><br><span class="line">                proxy_set_header Connection &#39;upgrade&#39;;</span><br><span class="line">                proxy_set_header Host $host;</span><br><span class="line">                proxy_cache_bypass $http_upgrade;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/05/29/2020-05-29_Nginx%E8%A3%BD%E4%BD%9CHomeServer/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
