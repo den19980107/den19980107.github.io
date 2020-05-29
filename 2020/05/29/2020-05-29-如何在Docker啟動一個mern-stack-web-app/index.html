@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"den19980107.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="先決條件 需要先安裝 docker  在安裝完成後在終端機執行  1docker   應該要看到有顯示類似下面的東西  1234567891011121314Usage:  docker [OPTIONS] COMMANDA self-sufficient runtime for containersOptions:      --config string      Location of cl">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何在 Docker 上啟動一個 mern stack web app">
+<meta property="og:url" content="https://den19980107.github.io/2020/05/29/2020-05-29-%E5%A6%82%E4%BD%95%E5%9C%A8Docker%E5%95%9F%E5%8B%95%E4%B8%80%E5%80%8Bmern-stack-web-app/index.html">
+<meta property="og:site_name" content="賢慧的雞塊">
+<meta property="og:description" content="先決條件 需要先安裝 docker  在安裝完成後在終端機執行  1docker   應該要看到有顯示類似下面的東西  1234567891011121314Usage:  docker [OPTIONS] COMMANDA self-sufficient runtime for containersOptions:      --config string      Location of cl">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2020-05-29T13:29:25.000Z">
+<meta property="article:modified_time" content="2020-05-29T13:31:18.027Z">
+<meta property="article:author" content="賢慧的雞塊">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="deploy">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://den19980107.github.io/2020/05/29/2020-05-29-%E5%A6%82%E4%BD%95%E5%9C%A8Docker%E5%95%9F%E5%8B%95%E4%B8%80%E5%80%8Bmern-stack-web-app/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>如何在 Docker 上啟動一個 mern stack web app | 賢慧的雞塊</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">賢慧的雞塊</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/05/29/2020-05-29-%E5%A6%82%E4%BD%95%E5%9C%A8Docker%E5%95%9F%E5%8B%95%E4%B8%80%E5%80%8Bmern-stack-web-app/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="賢慧的雞塊">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="賢慧的雞塊">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          如何在 Docker 上啟動一個 mern stack web app
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-05-29 21:29:25 / Modified: 21:31:18" itemprop="dateCreated datePublished" datetime="2020-05-29T21:29:25+08:00">2020-05-29</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="先決條件"><a href="#先決條件" class="headerlink" title="先決條件"></a>先決條件</h2><ul>
+<li>需要先安裝 <a href="https://www.docker.com/products/docker-desktop" target="_blank" rel="noopener">docker</a><br>  在安裝完成後在終端機執行  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker</span><br></pre></td></tr></table></figure>
+  應該要看到有顯示類似下面的東西  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Usage:  docker [OPTIONS] COMMAND</span><br><span class="line"></span><br><span class="line">A self-sufficient runtime for containers</span><br><span class="line"></span><br><span class="line">Options:</span><br><span class="line">      --config string      Location of client config files (default &quot;&#x2F;Users&#x2F;den19980107&#x2F;.docker&quot;)</span><br><span class="line">  -c, --context string     Name of the context to use to connect to the daemon (overrides DOCKER_HOST env var and default context set with</span><br><span class="line">                           &quot;docker context use&quot;)</span><br><span class="line">  -D, --debug              Enable debug mode</span><br><span class="line">  -H, --host list          Daemon socket(s) to connect to</span><br><span class="line">  -l, --log-level string   Set the logging level (&quot;debug&quot;|&quot;info&quot;|&quot;warn&quot;|&quot;error&quot;|&quot;fatal&quot;) (default &quot;info&quot;)</span><br><span class="line">      --tls                Use TLS; implied by --tlsverify</span><br><span class="line">      --tlscacert string   Trust certs signed only by this CA (default &quot;&#x2F;Users&#x2F;den19980107&#x2F;.docker&#x2F;ca.pem&quot;)</span><br><span class="line">      --tlscert string     Path to TLS certificate fil</span><br></pre></td></tr></table></figure></li>
+<li>確定該 app run 的起來</li>
+<li>如果有用到 mongodb，monodb 的 url 不能用 localhost 應該要改成這樣  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongodb:&#x2F;&#x2F;localhost:27017 &#x3D;&gt; mongodb:&#x2F;&#x2F;mongo:27017&#x2F;online-compile</span><br></pre></td></tr></table></figure>
+  其中 mongo 是你 mongo image 的名稱 註：<code>mongodb image 名稱</code></li>
+</ul>
+<h2 id="將-app-部署到-docker-上"><a href="#將-app-部署到-docker-上" class="headerlink" title="將 app 部署到 docker 上"></a>將 app 部署到 docker 上</h2><ul>
+<li><p>首先在專案根目錄建立一個名為 Dockerfile 的檔案，並在裡面輸入以下內容</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"># 指定 node 版本 建議用現在本機的版本避免出錯</span><br><span class="line">FROM node:8.4.0-alpine</span><br><span class="line"></span><br><span class="line"># 設定這個 app 在 docker 上的工作目錄</span><br><span class="line">WORKDIR &#x2F;usr&#x2F;src&#x2F;app</span><br><span class="line"></span><br><span class="line"># 把 package.json 和 package.locl.json 複製到工作目錄中</span><br><span class="line">COPY package*.json .&#x2F; </span><br><span class="line"></span><br><span class="line"># -- 如果有使用到 bcrypt 或是任何需要 node-pre-gyp 提前編譯的套件需輸入下面的指令 --</span><br><span class="line"># 需要先安裝 python 到 container 上 node 才有辦法用 node-pre-gyp 預先編譯 bcrypt</span><br><span class="line">RUN apk --no-cache add --virtual builds-deps build-base python </span><br><span class="line"># 再重新編譯 bcrypt</span><br><span class="line">RUN npm rebuild bcrypt --build-from-source</span><br><span class="line"># ------------------------------------------------------------------------</span><br><span class="line"></span><br><span class="line"># install npm 套件</span><br><span class="line">RUN npm install </span><br><span class="line"></span><br><span class="line"># 把專案內的東西全部拷貝進 docker 的工作目錄中</span><br><span class="line">COPY . .</span><br><span class="line"></span><br><span class="line"># 設定 app 要對外的 port 此範例是 port 5000</span><br><span class="line">EXPOSE 5000</span><br><span class="line"></span><br><span class="line"># 設定執行時要 run 的指令 這邊就看你平常是怎麼把你的專案 on 起來的就輸入哪個</span><br><span class="line">CMD npm run production</span><br></pre></td></tr></table></figure></li>
+<li><p>再來一樣在專案目錄下建立一個名為 docker-compose.yml 的檔案</p>
+  <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'2'</span> <span class="comment"># docker-compose 版本</span></span><br><span class="line"><span class="attr">services:</span> <span class="comment"># 固定的不要改</span></span><br><span class="line">  <span class="attr">app:</span> <span class="comment"># 取你想取的名字代表這個 app</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">docker-online-compile</span> <span class="comment"># 這個 app run 起來後的 container 名稱 也是任意取</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span> <span class="comment"># 當出現問題壞掉時自動重啟</span></span><br><span class="line">    <span class="attr">build:</span> <span class="string">.</span> <span class="comment"># build 全部的東西</span></span><br><span class="line">    <span class="comment"># 指定 app 佔用的口 </span></span><br><span class="line">    <span class="attr">ports:</span> </span><br><span class="line">    <span class="comment">#左邊的 80 是 docker run 起來後本機要輸入 localhost:80 才看得到 app</span></span><br><span class="line">    <span class="comment">#右邊得則是你 app 原本 on 的 port 要跟 Dockerfile 的 EXPOSE 一樣</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">'80:5000'</span></span><br><span class="line">    <span class="comment"># 表示你的 app 需要依賴於 mongo 這邊的 mongo 就是 (1) 所寫的名稱</span></span><br><span class="line">    <span class="attr">links:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">mongo</span></span><br><span class="line">  <span class="attr">mongo:</span> <span class="comment">#(1)</span></span><br><span class="line">    <span class="comment"># mongodb 的 container 名稱</span></span><br><span class="line">    <span class="comment">#跟上面講的 [mongodb image 名稱] 一樣</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">mongo</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 因為我們不是自己安裝 mongodb</span></span><br><span class="line">    <span class="comment"># docker 會幫我們上網抓 mongo 的image下來</span></span><br><span class="line">    <span class="comment"># 那個 mongo image 的名稱就叫 mongo</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mongo</span></span><br><span class="line">    <span class="attr">ports:</span> <span class="comment"># mongo 的 port</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">'27017:27017'</span></span><br></pre></td></tr></table></figure></li>
+<li><p>一樣在根目錄下新增一個 .dockerignore 的檔案，功能跟 gitignore 一樣過濾掉一些不想傳到 docker 上的東西</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node_modules</span><br><span class="line">npm-debug.log</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>最後就可以在終端機執行</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up</span><br></pre></td></tr></table></figure>
+<p>  這樣就會看到一堆東西在跑，等到跑完之後就可以打開瀏覽器去 localhost:80 看看有沒有成功了</p>
+</li>
+<li><p>如果要關掉的話執行</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose down</span><br></pre></td></tr></table></figure>
+<h2 id="基本指令"><a href="#基本指令" class="headerlink" title="基本指令"></a>基本指令</h2></li>
+<li><p><code>docker images</code> 顯示本機所有已安裝的 images</p>
+</li>
+<li><p><code>docker image rm [image id] -f</code> 刪除 image by id</p>
+</li>
+<li><p><code>docker ps</code> 顯示所有 container</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/docker/" rel="tag"># docker</a>
+              <a href="/tags/deploy/" rel="tag"># deploy</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/29/2020-05-29-React-Hook-%E5%B0%8F%E6%8F%90%E7%A4%BA/" rel="prev" title="React Hook 小提示">
+      <i class="fa fa-chevron-left"></i> React Hook 小提示
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/29/2020-05-29-Docker%E5%95%9F%E7%94%A8Load-Balance/" rel="next" title="Docker 啟用 Load Balance">
+      Docker 啟用 Load Balance <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#先決條件"><span class="nav-number">1.</span> <span class="nav-text">先決條件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#將-app-部署到-docker-上"><span class="nav-number">2.</span> <span class="nav-text">將 app 部署到 docker 上</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本指令"><span class="nav-number">3.</span> <span class="nav-text">基本指令</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">賢慧的雞塊</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">賢慧的雞塊</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

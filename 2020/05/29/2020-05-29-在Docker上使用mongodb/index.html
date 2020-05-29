@@ -20,21 +20,24 @@
     var CONFIG = {"hostname":"den19980107.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="在做 icoding 的時候常常會需要上傳影片到平台上，本機測試的時候影片可以上傳成功，但當網站部署到伺服器後，上傳影片卻失敗，資料庫一直沒有出現影片的資料 前端噴的錯誤訊息1413 Request Entity Too Large  問題原因：在 nginx 中有預設可上傳檔案的大小2M，如果今天影片超過此大小便會上傳不成功 解決辦法：在 nginx.conf 檔案中 http，server 或">
+  <meta name="description" content="下載 mongodb 映像檔1docker pull mongo:4.1 run docker images 看有沒有下載成功1docker images 在 project 根目錄建立一個 data 的資料夾，用來放 mongodb 的資料，可以讓 mongo 容器刪除時可以留下資料，下次建立容器可以繼續使用 在根目錄執行 mongodb1docker run --name mongo4 -v">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Nginx 無法傳輸大檔案問題">
-<meta property="og:url" content="https://den19980107.github.io/2020/05/29/Nginx%E7%84%A1%E6%B3%95%E5%82%B3%E8%BC%B8%E5%A4%A7%E6%AA%94%E6%A1%88%E5%95%8F%E9%A1%8C/index.html">
+<meta property="og:title" content="在 Docker 上使用 mongodb">
+<meta property="og:url" content="https://den19980107.github.io/2020/05/29/2020-05-29-%E5%9C%A8Docker%E4%B8%8A%E4%BD%BF%E7%94%A8mongodb/index.html">
 <meta property="og:site_name" content="賢慧的雞塊">
-<meta property="og:description" content="在做 icoding 的時候常常會需要上傳影片到平台上，本機測試的時候影片可以上傳成功，但當網站部署到伺服器後，上傳影片卻失敗，資料庫一直沒有出現影片的資料 前端噴的錯誤訊息1413 Request Entity Too Large  問題原因：在 nginx 中有預設可上傳檔案的大小2M，如果今天影片超過此大小便會上傳不成功 解決辦法：在 nginx.conf 檔案中 http，server 或">
+<meta property="og:description" content="下載 mongodb 映像檔1docker pull mongo:4.1 run docker images 看有沒有下載成功1docker images 在 project 根目錄建立一個 data 的資料夾，用來放 mongodb 的資料，可以讓 mongo 容器刪除時可以留下資料，下次建立容器可以繼續使用 在根目錄執行 mongodb1docker run --name mongo4 -v">
 <meta property="og:locale" content="zh_TW">
-<meta property="article:published_time" content="2020-05-29T12:54:10.000Z">
-<meta property="article:modified_time" content="2020-05-29T12:55:42.960Z">
+<meta property="og:image" content="https://i.imgur.com/So0EKyn.png">
+<meta property="og:image" content="https://i.imgur.com/OoVs368.png">
+<meta property="article:published_time" content="2020-05-29T13:32:06.000Z">
+<meta property="article:modified_time" content="2020-05-29T13:32:30.640Z">
 <meta property="article:author" content="賢慧的雞塊">
+<meta property="article:tag" content="docker">
 <meta property="article:tag" content="deploy">
-<meta property="article:tag" content="nginx">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/So0EKyn.png">
 
-<link rel="canonical" href="https://den19980107.github.io/2020/05/29/Nginx%E7%84%A1%E6%B3%95%E5%82%B3%E8%BC%B8%E5%A4%A7%E6%AA%94%E6%A1%88%E5%95%8F%E9%A1%8C/">
+<link rel="canonical" href="https://den19980107.github.io/2020/05/29/2020-05-29-%E5%9C%A8Docker%E4%B8%8A%E4%BD%BF%E7%94%A8mongodb/">
 
 
 <script id="page-configurations">
@@ -47,7 +50,7 @@
   };
 </script>
 
-  <title>Nginx 無法傳輸大檔案問題 | 賢慧的雞塊</title>
+  <title>在 Docker 上使用 mongodb | 賢慧的雞塊</title>
   
 
 
@@ -152,7 +155,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
-    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/05/29/Nginx%E7%84%A1%E6%B3%95%E5%82%B3%E8%BC%B8%E5%A4%A7%E6%AA%94%E6%A1%88%E5%95%8F%E9%A1%8C/">
+    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/05/29/2020-05-29-%E5%9C%A8Docker%E4%B8%8A%E4%BD%BF%E7%94%A8mongodb/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -165,7 +168,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Nginx 無法傳輸大檔案問題
+          在 Docker 上使用 mongodb
         </h1>
 
         <div class="post-meta">
@@ -176,7 +179,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-05-29 20:54:10 / Modified: 20:55:42" itemprop="dateCreated datePublished" datetime="2020-05-29T20:54:10+08:00">2020-05-29</time>
+              <time title="Created: 2020-05-29 21:32:06 / Modified: 21:32:30" itemprop="dateCreated datePublished" datetime="2020-05-29T21:32:06+08:00">2020-05-29</time>
             </span>
 
           
@@ -190,12 +193,29 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>在做 icoding 的時候常常會需要上傳影片到平台上，本機測試的時候影片可以上傳成功，但當網站部署到伺服器後，上傳影片卻失敗，資料庫一直沒有出現影片的資料</p>
-<h2 id="前端噴的錯誤訊息"><a href="#前端噴的錯誤訊息" class="headerlink" title="前端噴的錯誤訊息"></a>前端噴的錯誤訊息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">413 Request Entity Too Large</span><br></pre></td></tr></table></figure>
+        <ul>
+<li>下載 mongodb 映像檔<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull mongo:4.1</span><br></pre></td></tr></table></figure></li>
+<li>run docker images 看有沒有下載成功<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure></li>
+<li>在 project 根目錄建立一個 data 的資料夾，用來放 mongodb 的資料，可以讓 mongo 容器刪除時可以留下資料，下次建立容器可以繼續使用</li>
+<li>在根目錄執行 mongodb<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name mongo4 -v $(pwd)&#x2F;data:&#x2F;data&#x2F;db -d -p 27017:27017 --rm mongo:4.1</span><br></pre></td></tr></table></figure>
 
-<h2 id="問題原因："><a href="#問題原因：" class="headerlink" title="問題原因："></a>問題原因：</h2><p>在 nginx 中有預設可上傳檔案的大小2M，如果今天影片超過此大小便會上傳不成功</p>
-<h2 id="解決辦法："><a href="#解決辦法：" class="headerlink" title="解決辦法："></a>解決辦法：</h2><p>在 nginx.conf 檔案中 http，server 或者 location 段中加入以下指令，可調整 nginx 可接受的檔案大小</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># set client body size to 8M #</span><br><span class="line">client_max_body_size 8M;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><code>docker ps</code> 確定有執行</p>
+<p><img src="https://i.imgur.com/So0EKyn.png" alt=""></p>
+<p>我們用映象檔 mongo:4.1 建立了名為 mongo4 的容器，掛載 hello-mongo 根目錄下的 data 資料夾到容器內。容器在背景執行，且對外的 port 號是 27017。當容器停止後自行移除。</p>
+<ul>
+<li><p>確認 mongodb 資料庫有運行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec mongo4 mongo --eval &quot;print(version())&quot;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.imgur.com/OoVs368.png" alt=""></p>
+</li>
+<li><p>若需要停止容器 (關掉 mongodb 資料庫)，請輸入</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop mongo4</span><br></pre></td></tr></table></figure>
+
+<h2 id="文章連結"><a href="#文章連結" class="headerlink" title="文章連結"></a>文章連結</h2><p><a href="https://ithelp.ithome.com.tw/articles/10201657?sc=iThelpR" target="_blank" rel="noopener">https://ithelp.ithome.com.tw/articles/10201657?sc=iThelpR</a></p>
+
     </div>
 
     
@@ -204,8 +224,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
+              <a href="/tags/docker/" rel="tag"># docker</a>
               <a href="/tags/deploy/" rel="tag"># deploy</a>
-              <a href="/tags/nginx/" rel="tag"># nginx</a>
           </div>
 
         
@@ -214,13 +234,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/05/29/Nginx%E8%A3%BD%E4%BD%9CHomeServer/" rel="prev" title="Nginx 製作 HomeServer">
-      <i class="fa fa-chevron-left"></i> Nginx 製作 HomeServer
+    <a href="/2020/05/29/2020-05-29-Docker%E5%95%9F%E7%94%A8Load-Balance/" rel="prev" title="Docker 啟用 Load Balance">
+      <i class="fa fa-chevron-left"></i> Docker 啟用 Load Balance
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/05/29/Heroku%E9%83%A8%E7%BD%B2mern-stack-app/" rel="next" title="Heroku 部署 mern stackapp">
-      Heroku 部署 mern stackapp <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -279,7 +296,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前端噴的錯誤訊息"><span class="nav-number">1.</span> <span class="nav-text">前端噴的錯誤訊息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#問題原因："><span class="nav-number">2.</span> <span class="nav-text">問題原因：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解決辦法："><span class="nav-number">3.</span> <span class="nav-text">解決辦法：</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#文章連結"><span class="nav-number">1.</span> <span class="nav-text">文章連結</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -293,12 +310,12 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
