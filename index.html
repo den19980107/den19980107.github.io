@@ -390,10 +390,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-05-29 21:26:52 / Modified: 21:31:10" itemprop="dateCreated datePublished" datetime="2020-05-29T21:26:52+08:00">2020-05-29</time>
+              <time title="Created: 2020-05-29 21:26:52" itemprop="dateCreated datePublished" datetime="2020-05-29T21:26:52+08:00">2020-05-29</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-31 11:45:07" itemprop="dateModified" datetime="2020-05-31T11:45:07+08:00">2020-05-31</time>
+              </span>
 
           
 
@@ -722,10 +728,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-05-29 20:50:48 / Modified: 21:44:20" itemprop="dateCreated datePublished" datetime="2020-05-29T20:50:48+08:00">2020-05-29</time>
+              <time title="Created: 2020-05-29 20:50:48" itemprop="dateCreated datePublished" datetime="2020-05-29T20:50:48+08:00">2020-05-29</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-06-02 12:23:25" itemprop="dateModified" datetime="2020-06-02T12:23:25+08:00">2020-06-02</time>
+              </span>
 
           
 
@@ -739,12 +751,9 @@
 
       
           <ol>
-<li><p>安裝 <a href="http://nginx.org/en/download.html" target="_blank" rel="noopener">nginx</a></p>
-</li>
-<li><p>on 起你的 app (假設為一個 node server on 在 localhost:5000)</p>
-</li>
-<li><p>設定 nginx.conf (在下載下來的 nginx根目錄/conf 裡面) 下面的設定檔的意思是監聽 port 80，如果有從 80 進來的，轉跳到 port 5000</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">events&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">http &#123;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen 80 default_server;</span><br><span class="line">        listen [::]:80 default_server;</span><br><span class="line">        server_name localhost;</span><br><span class="line">        # set client body size to 100M #</span><br><span class="line">        client_max_body_size 100M;</span><br><span class="line">        location &#x2F; &#123;</span><br><span class="line">                proxy_pass http:&#x2F;&#x2F;localhost:5000; #whatever port your app runs on</span><br><span class="line">                proxy_http_version 1.1;</span><br><span class="line">                proxy_set_header Upgrade $http_upgrade;</span><br><span class="line">                proxy_set_header Connection &#39;upgrade&#39;;</span><br><span class="line">                proxy_set_header Host $host;</span><br><span class="line">                proxy_cache_bypass $http_upgrade;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li>安裝 <a href="http://nginx.org/en/download.html" target="_blank" rel="noopener">nginx</a></li>
+<li>on 起你的 app (假設為一個 node server on 在 localhost:5000)</li>
+<li>設定 nginx.conf (在下載下來的 nginx根目錄/conf 裡面) 下面的設定檔的意思是監聽 port 80，如果有從 80 進來的，轉跳到 port 5000<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">events&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">http &#123;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen 80 default_server;</span><br><span class="line">        listen [::]:80 default_server;</span><br><span class="line">        server_name localhost;</span><br><span class="line">        # set client body size to 100M #</span><br><span class="line">        client_max_body_size 100M;</span><br><span class="line">        location &#x2F; &#123;</span><br><span class="line">                proxy_pass http:&#x2F;&#x2F;localhost:5000; #whatever port your app runs on</span><br><span class="line">                proxy_http_version 1.1;</span><br><span class="line">                proxy_set_header Upgrade $http_upgrade;</span><br><span class="line">                proxy_set_header Connection &#39;upgrade&#39;;</span><br><span class="line">                proxy_set_header Host $host;</span><br><span class="line">                proxy_cache_bypass $http_upgrade;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/05/29/2020-05-29_Nginx%E8%A3%BD%E4%BD%9CHomeServer/#more" rel="contents">
