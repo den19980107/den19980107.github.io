@@ -23,30 +23,27 @@
   </script>
 
   <meta property="og:type" content="website">
-<meta property="og:title" content="標籤">
-<meta property="og:url" content="https://den19980107.github.io/tags/index.html">
+<meta property="og:title" content="賢慧的雞塊">
+<meta property="og:url" content="https://den19980107.github.io/page/2/index.html">
 <meta property="og:site_name" content="賢慧的雞塊">
 <meta property="og:locale" content="zh_TW">
-<meta property="article:published_time" content="2020-05-08T10:52:51.000Z">
-<meta property="article:modified_time" content="2020-05-29T13:50:16.185Z">
 <meta property="article:author" content="賢慧的雞塊">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://den19980107.github.io/tags/">
+<link rel="canonical" href="https://den19980107.github.io/page/2/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : false,
+    isHome : true,
     isPost : false,
     lang   : 'zh-tw'
   };
 </script>
 
-  <title>標籤 | 賢慧的雞塊
-</title>
+  <title>賢慧的雞塊</title>
   
 
 
@@ -148,51 +145,90 @@
       <div class="main-inner">
         <div class="content-wrap">
           
-  
-  
 
-          <div class="content page posts-expand">
+          <div class="content index posts-expand">
             
-
-    
-    
-    
-    <div class="post-block" lang="zh-tw">
-      <header class="post-header">
-
-<h1 class="post-title" itemprop="name headline">標籤
-</h1>
-
-<div class="post-meta">
+      
   
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/05/29/2020-05-29_Nginx%E8%A3%BD%E4%BD%9CHomeServer/">
 
-</div>
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="賢慧的雞塊">
+      <meta itemprop="description" content="">
+    </span>
 
-</header>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="賢慧的雞塊">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/05/29/2020-05-29_Nginx%E8%A3%BD%E4%BD%9CHomeServer/" class="post-title-link" itemprop="url">Nginx 製作 HomeServer</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-05-29 20:50:48" itemprop="dateCreated datePublished" datetime="2020-05-29T20:50:48+08:00">2020-05-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-06-02 12:23:25" itemprop="dateModified" datetime="2020-06-02T12:23:25+08:00">2020-06-02</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-      
-      
-      <div class="post-body">
-          <div class="tag-cloud">
-            <div class="tag-cloud-title">
-              12 tags in total
+          <ol>
+<li>安裝 <a href="http://nginx.org/en/download.html" target="_blank" rel="noopener">nginx</a></li>
+<li>on 起你的 app (假設為一個 node server on 在 localhost:5000)</li>
+<li>設定 nginx.conf (在下載下來的 nginx根目錄/conf 裡面) 下面的設定檔的意思是監聽 port 80，如果有從 80 進來的，轉跳到 port 5000<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">events&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">http &#123;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen 80 default_server;</span><br><span class="line">        listen [::]:80 default_server;</span><br><span class="line">        server_name localhost;</span><br><span class="line">        # set client body size to 100M #</span><br><span class="line">        client_max_body_size 100M;</span><br><span class="line">        location &#x2F; &#123;</span><br><span class="line">                proxy_pass http:&#x2F;&#x2F;localhost:5000; #whatever port your app runs on</span><br><span class="line">                proxy_http_version 1.1;</span><br><span class="line">                proxy_set_header Upgrade $http_upgrade;</span><br><span class="line">                proxy_set_header Connection &#39;upgrade&#39;;</span><br><span class="line">                proxy_set_header Host $host;</span><br><span class="line">                proxy_cache_bypass $http_upgrade;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/05/29/2020-05-29_Nginx%E8%A3%BD%E4%BD%9CHomeServer/#more" rel="contents">
+                Read more &raquo;
+              </a>
             </div>
-            <div class="tag-cloud-tags">
-              <a href="/tags/GSS/" style="font-size: 18px; color: #8e8e8e">GSS</a> <a href="/tags/LUIS/" style="font-size: 18px; color: #8e8e8e">LUIS</a> <a href="/tags/bot-framework-composer/" style="font-size: 18px; color: #8e8e8e">bot framework composer</a> <a href="/tags/deploy/" style="font-size: 30px; color: #111">deploy</a> <a href="/tags/docker/" style="font-size: 24px; color: #4f4f4f">docker</a> <a href="/tags/google-cloud-platform/" style="font-size: 12px; color: #ccc">google cloud platform</a> <a href="/tags/heroku/" style="font-size: 12px; color: #ccc">heroku</a> <a href="/tags/hook/" style="font-size: 12px; color: #ccc">hook</a> <a href="/tags/load-balance/" style="font-size: 12px; color: #ccc">load-balance</a> <a href="/tags/nginx/" style="font-size: 18px; color: #8e8e8e">nginx</a> <a href="/tags/nodejs/" style="font-size: 12px; color: #ccc">nodejs</a> <a href="/tags/react/" style="font-size: 18px; color: #8e8e8e">react</a>
-            </div>
-          </div>
+          <!--/noindex-->
         
-      </div>
-      
-      
       
     </div>
-    
 
     
     
     
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
 
 
           </div>
