@@ -22,26 +22,27 @@
     var CONFIG = {"hostname":"den19980107.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="先決條件 確認是否有 google cloud platform 付費會員或免費試用會員 在平台中新增一個專案    安裝 gcloud sdk 下載網址  可以在 terminal 輸入 gcloud 看看是否會輸出下面的畫面">
+  <meta name="description" content="部署到 Azure Web App 的方式使用 Azure CLI 部署 web app目前有找到一個範例，但是部署上去的過程有問題，官網的 deployment script  create group 1az group create --name ldlDeploy --location japanwest       create plan 1az appservice plan crea">
 <meta property="og:type" content="article">
-<meta property="og:title" content="如何將node.js app 部署到google cloud platform">
-<meta property="og:url" content="https://den19980107.github.io/2020/05/29/2020-05-29_%E5%A6%82%E4%BD%95%E5%B0%87node-js-app-%E9%83%A8%E7%BD%B2%E5%88%B0google-cloud-platform/index.html">
+<meta property="og:title" content="部署到 Azure Web App 的方式">
+<meta property="og:url" content="https://den19980107.github.io/2020/07/16/2020-07-16-%E4%BD%BF%E7%94%A8AzureCLI%E9%83%A8%E7%BD%B2WebApp/index.html">
 <meta property="og:site_name" content="賢慧的雞塊">
-<meta property="og:description" content="先決條件 確認是否有 google cloud platform 付費會員或免費試用會員 在平台中新增一個專案    安裝 gcloud sdk 下載網址  可以在 terminal 輸入 gcloud 看看是否會輸出下面的畫面">
+<meta property="og:description" content="部署到 Azure Web App 的方式使用 Azure CLI 部署 web app目前有找到一個範例，但是部署上去的過程有問題，官網的 deployment script  create group 1az group create --name ldlDeploy --location japanwest       create plan 1az appservice plan crea">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://i.imgur.com/dXyYPDq.jpg">
-<meta property="og:image" content="https://i.imgur.com/EpimuOo.jpg">
-<meta property="og:image" content="https://i.imgur.com/az5Bmza.jpg">
-<meta property="article:published_time" content="2020-05-29T12:56:59.000Z">
-<meta property="article:modified_time" content="2020-05-29T13:44:09.895Z">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggslvruhr2j30rm0la0xh.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gglzcs46obj309a0490st.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gglzde50ppj30k003tjri.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gglzdzoyp2j30k0037t8y.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gglzenlyz9j30k00e1wff.jpg">
+<meta property="article:published_time" content="2020-07-16T09:01:43.000Z">
+<meta property="article:modified_time" content="2020-07-16T09:03:55.535Z">
 <meta property="article:author" content="賢慧的雞塊">
-<meta property="article:tag" content="deploy">
-<meta property="article:tag" content="google cloud platform">
-<meta property="article:tag" content="nodejs">
+<meta property="article:tag" content="Azure">
+<meta property="article:tag" content="GSS">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.imgur.com/dXyYPDq.jpg">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggslvruhr2j30rm0la0xh.jpg">
 
-<link rel="canonical" href="https://den19980107.github.io/2020/05/29/2020-05-29_%E5%A6%82%E4%BD%95%E5%B0%87node-js-app-%E9%83%A8%E7%BD%B2%E5%88%B0google-cloud-platform/">
+<link rel="canonical" href="https://den19980107.github.io/2020/07/16/2020-07-16-%E4%BD%BF%E7%94%A8AzureCLI%E9%83%A8%E7%BD%B2WebApp/">
 
 
 <script id="page-configurations">
@@ -54,7 +55,7 @@
   };
 </script>
 
-  <title>如何將node.js app 部署到google cloud platform | 賢慧的雞塊</title>
+  <title>部署到 Azure Web App 的方式 | 賢慧的雞塊</title>
   
 
 
@@ -164,7 +165,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
-    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/05/29/2020-05-29_%E5%A6%82%E4%BD%95%E5%B0%87node-js-app-%E9%83%A8%E7%BD%B2%E5%88%B0google-cloud-platform/">
+    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/07/16/2020-07-16-%E4%BD%BF%E7%94%A8AzureCLI%E9%83%A8%E7%BD%B2WebApp/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -177,7 +178,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          如何將node.js app 部署到google cloud platform
+          部署到 Azure Web App 的方式
         </h1>
 
         <div class="post-meta">
@@ -188,7 +189,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-05-29 20:56:59 / Modified: 21:44:09" itemprop="dateCreated datePublished" datetime="2020-05-29T20:56:59+08:00">2020-05-29</time>
+              <time title="Created: 2020-07-16 17:01:43 / Modified: 17:03:55" itemprop="dateCreated datePublished" datetime="2020-07-16T17:01:43+08:00">2020-07-16</time>
             </span>
 
           
@@ -202,34 +203,59 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="先決條件"><a href="#先決條件" class="headerlink" title="先決條件"></a>先決條件</h2><ul>
-<li>確認是否有 google cloud platform 付費會員或免費試用會員</li>
-<li>在平台中新增一個專案</li>
-</ul>
-<p><img src="https://i.imgur.com/dXyYPDq.jpg" alt=""></p>
-<ul>
-<li>安裝 gcloud sdk <a href="https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-245.0.0-darwin-x86_64.tar.gz" target="_blank" rel="noopener">下載網址</a></li>
-</ul>
-<p>可以在 terminal 輸入 gcloud 看看是否會輸出下面的畫面</p>
-<p><img src="https://i.imgur.com/EpimuOo.jpg" alt=""></p>
-<a id="more"></a>
-<h2 id="開始部署"><a href="#開始部署" class="headerlink" title="開始部署"></a>開始部署</h2><ul>
-<li><ol>
-<li>cd 到要部署的專案底下並確定 npm start 可以正常運作</li>
+        <h1 id="部署到-Azure-Web-App-的方式"><a href="#部署到-Azure-Web-App-的方式" class="headerlink" title="部署到 Azure Web App 的方式"></a>部署到 Azure Web App 的方式</h1><h2 id="使用-Azure-CLI-部署-web-app"><a href="#使用-Azure-CLI-部署-web-app" class="headerlink" title="使用 Azure CLI 部署 web app"></a>使用 Azure CLI 部署 web app</h2><p>目前有找到一個<a href="https://microsoft.github.io/AzureTipsAndTricks/blog/tip19.html" target="_blank" rel="noopener">範例</a>，但是部署上去的過程有問題，官網的 <a href="https://github.com/microsoft/vscode-azureappservice/blob/2b146bd724f3bb1856fe426a941b80f2826d41c3/resources/deploymentScripts/linux-default.sh" target="_blank" rel="noopener">deployment script</a></p>
+<ol>
+<li><p>create group</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">az group create --name ldlDeploy --location japanwest</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
 </ol>
+<ol start="2">
+<li><p>create plan</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">az appservice plan create --name ldlDeployPlan --location japanwest --is-linux --sku FREE --resource-group ldlDeploy</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>2.在專案的根目錄新增一個 app.yaml 的檔案並輸入下面的內容</p>
-<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">runtime:</span> <span class="string">nodejs</span></span><br><span class="line"><span class="attr">env:</span> <span class="string">flex</span></span><br></pre></td></tr></table></figure></li>
-<li><p>3.在終端機 cd 至要部署的專案底下運行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcloud app deploy</span><br></pre></td></tr></table></figure></li>
-<li><p>4.選擇剛剛在 google cloud platfrom 上建立的專案<br><img src="https://i.imgur.com/az5Bmza.jpg" alt=""></p>
+<li><p>create web app</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">az webapp create --name ldlDeploy --plan ldlDeployPlan --runtime "NODE|12-lts" --resource-group ldlDeploy</span><br></pre></td></tr></table></figure>
 </li>
-<li><p>5.如果部署成果的話在終端機輸入</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcloud app browse</span><br></pre></td></tr></table></figure>
-<p>應該就可以打開我們的專案了</p>
+<li><p>set using local git to push</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">az webapp deployment source config-local-git --name ldlDeploy --resource-group ldlDeploy</span><br></pre></td></tr></table></figure>
+
+
+
 </li>
-</ul>
-<h2 id="相關文章"><a href="#相關文章" class="headerlink" title="相關文章"></a>相關文章</h2><p><a href="https://cloud.google.com/appengine/docs/flexible/nodejs/testing-and-deploying-your-app?hl=zh-tw" target="_blank" rel="noopener">google doc</a></p>
+</ol>
+<ol start="5">
+<li><p>add remote</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add azure "https://paul_tseng@ldlDeploy.scm.azurewebsites.net/ldlDeploy.git"</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>push </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push azure master</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>錯誤</p>
+<p>在部署的過程中一遇到 <code>npm run bulid</code>時，如果裡面有使用 <code>tsc &amp;&amp; webpack</code> 的話，會失敗，不太確定是不是因為 Azure 上面的虛擬機沒有 tsc 或 webpack</p>
+</li>
+</ol>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1ggslvruhr2j30rm0la0xh.jpg" alt="截圖 2020-07-16 上午10.30.42"></p>
+<h2 id="使用-VSCode-部署"><a href="#使用-VSCode-部署" class="headerlink" title="使用 VSCode 部署"></a>使用 VSCode 部署</h2><ol>
+<li><p>在 vs code 安裝 <a href="https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azureappservice" target="_blank" rel="noopener">Azure App Service</a> </p>
+</li>
+<li><p>點選上傳按鈕</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gglzcs46obj309a0490st.jpg" alt="截圖 2020-07-10 下午4.57.36"></p>
+</li>
+<li><p>選取 Create new Web App</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gglzde50ppj30k003tjri.jpg" alt="截圖 2020-07-10 下午4.58.36"></p>
+</li>
+<li><p>輸入網站名稱</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gglzdzoyp2j30k0037t8y.jpg" alt="截圖 2020-07-10 下午4.59.09"></p>
+</li>
+<li><p>選取 Node js 版本，測試時是使用 Node 12 LTS</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gglzenlyz9j30k00e1wff.jpg" alt="截圖 2020-07-10 下午4.59.49"></p>
+</li>
+<li><p>輸入完成後就會開始部署</p>
+</li>
+</ol>
 
     </div>
 
@@ -239,9 +265,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/deploy/" rel="tag"># deploy</a>
-              <a href="/tags/google-cloud-platform/" rel="tag"># google cloud platform</a>
-              <a href="/tags/nodejs/" rel="tag"># nodejs</a>
+              <a href="/tags/Azure/" rel="tag"># Azure</a>
+              <a href="/tags/GSS/" rel="tag"># GSS</a>
           </div>
 
         
@@ -250,13 +275,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/05/29/2020-05-29_Heroku%E9%83%A8%E7%BD%B2mern-stack-app/" rel="prev" title="Heroku 部署 mern stackapp">
-      <i class="fa fa-chevron-left"></i> Heroku 部署 mern stackapp
+    <a href="/2020/06/05/2020-06-05-%E5%A6%82%E4%BD%95%E5%9C%A8BotFrameworkComposer%E5%85%A7%E4%BD%BF%E7%94%A8LUIS/" rel="prev" title="如何在 Bot Framework Composer 內使用 LUIS">
+      <i class="fa fa-chevron-left"></i> 如何在 Bot Framework Composer 內使用 LUIS
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/05/29/2020-05-29-React%E5%9C%A8IE11%E4%B8%8B%E7%84%A1%E6%B3%95%E9%A1%AF%E7%A4%BA/" rel="next" title="React 在 IE 11 下無法顯示">
-      React 在 IE 11 下無法顯示 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -315,7 +337,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#先決條件"><span class="nav-number">1.</span> <span class="nav-text">先決條件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#開始部署"><span class="nav-number">2.</span> <span class="nav-text">開始部署</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相關文章"><span class="nav-number">3.</span> <span class="nav-text">相關文章</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#部署到-Azure-Web-App-的方式"><span class="nav-number">1.</span> <span class="nav-text">部署到 Azure Web App 的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-Azure-CLI-部署-web-app"><span class="nav-number">1.1.</span> <span class="nav-text">使用 Azure CLI 部署 web app</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-VSCode-部署"><span class="nav-number">1.2.</span> <span class="nav-text">使用 VSCode 部署</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
