@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+<meta name="google-site-verification" content="QAo6YRDFuJzlaT-cDxw05ccSr7wt3h1iwbmffshWUOY" />
+<script data-ad-client="ca-pub-8963208625930704" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"den19980107.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="最近剛結束公司的一個 issue，要將 gss-webchat (React 專案) 裡面的 component 讓其他 React 專案也可以做使用，在過程中踩到了幾個雷跟大家分享一下 一開始定義的需求原先我們這個專案就有用 webpack build 出一版 es5 的 js 檔提供其他專案(不是使用 react，一般 MVC 的那種)當作外部 js 引入即可直接做使用，這隻 js 有提供幾個">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何將 React Component 發布到 npm">
+<meta property="og:url" content="https://den19980107.github.io/2020/09/24/2020-09-24_%E5%A6%82%E4%BD%95%E5%B0%87React-Component-%E7%99%BC%E5%B8%83%E5%88%B0-npm/index.html">
+<meta property="og:site_name" content="賢慧的雞塊">
+<meta property="og:description" content="最近剛結束公司的一個 issue，要將 gss-webchat (React 專案) 裡面的 component 讓其他 React 專案也可以做使用，在過程中踩到了幾個雷跟大家分享一下 一開始定義的需求原先我們這個專案就有用 webpack build 出一版 es5 的 js 檔提供其他專案(不是使用 react，一般 MVC 的那種)當作外部 js 引入即可直接做使用，這隻 js 有提供幾個">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gj2pa8arsvj31010u0wxs.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gj3ti6q983j309c0b2t9g.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gj3ucmjtfdj30j902gglx.jpg">
+<meta property="article:published_time" content="2020-09-24T01:54:31.000Z">
+<meta property="article:modified_time" content="2020-09-26T02:27:17.574Z">
+<meta property="article:author" content="賢慧的雞塊">
+<meta property="article:tag" content="react">
+<meta property="article:tag" content="npm">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gj2pa8arsvj31010u0wxs.jpg">
+
+<link rel="canonical" href="https://den19980107.github.io/2020/09/24/2020-09-24_%E5%A6%82%E4%BD%95%E5%B0%87React-Component-%E7%99%BC%E5%B8%83%E5%88%B0-npm/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>如何將 React Component 發布到 npm | 賢慧的雞塊</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">賢慧的雞塊</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/09/24/2020-09-24_%E5%A6%82%E4%BD%95%E5%B0%87React-Component-%E7%99%BC%E5%B8%83%E5%88%B0-npm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="賢慧的雞塊">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="賢慧的雞塊">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          如何將 React Component 發布到 npm
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-24 09:54:31" itemprop="dateCreated datePublished" datetime="2020-09-24T09:54:31+08:00">2020-09-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-26 10:27:17" itemprop="dateModified" datetime="2020-09-26T10:27:17+08:00">2020-09-26</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>最近剛結束公司的一個 issue，要將 gss-webchat (React 專案) 裡面的 component 讓其他 React 專案也可以做使用，在過程中踩到了幾個雷跟大家分享一下</p>
+<h3 id="一開始定義的需求"><a href="#一開始定義的需求" class="headerlink" title="一開始定義的需求"></a>一開始定義的需求</h3><p>原先我們這個專案就有用 webpack build 出一版 es5 的 js 檔提供其他專案(不是使用 react，一般 MVC 的那種)當作外部 js 引入即可直接做使用，這隻 js 有提供幾個功能</p>
+<ol>
+<li><p><code>GSSWebChat</code>：</p>
+<p>提供 <code>createBasicWebChat</code>、<code>createMinimizableWebChat</code>、 <code>clearStorage</code> 三個方法來讓使用者</p>
+<ul>
+<li>建立一般 webchat (沒有外匡，可自定義大小)</li>
+<li>MinimizableWebChat (可縮小放大的 webchat，縮小時會變成一個圓形小 icon 縮在螢幕角落)</li>
+<li>clearStorage (清空 webchat 所用到的 session storage， webchat 會將 user 資料存在這邊方便得知 user 是誰來載入歷史資料，清空則等於開啟新對話)</li>
+</ul>
+</li>
+<li><p>WebChatApi：</p>
+<p>提供使用者使用 BotFramework WebChat 原生方法</p>
+</li>
+</ol>
+<p>所以一開始希望我們 build 出來的這隻 js 檔可以同時被當作一般外部 js 引入，也可以當作 Component 被引入，所以做了以下的事情</p>
+<a id="more"></a>
+
+<ul>
+<li><p>在 export default 中加入 <code>Components</code>、<code>Utils</code> </p>
+<p>index.ts：</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="addition">+ const Components = &#123;</span></span><br><span class="line"><span class="addition">+  WebChat</span></span><br><span class="line"><span class="addition">+  MinimizableWebChat</span></span><br><span class="line"><span class="addition">+ &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="addition">+ const Utils = &#123;</span></span><br><span class="line"><span class="addition">+   Storage,</span></span><br><span class="line"><span class="addition">+   Store,</span></span><br><span class="line"><span class="addition">+   WebChatToggleStateObservable: &#123;</span></span><br><span class="line"><span class="addition">+     ...WebChatToggleStateObservable,</span></span><br><span class="line"><span class="addition">+     notify</span></span><br><span class="line"><span class="addition">+   &#125;</span></span><br><span class="line"><span class="addition">+ &#125;</span></span><br><span class="line"></span><br><span class="line"><span class="addition">+ export &#123;</span></span><br><span class="line"><span class="addition">+   Components,</span></span><br><span class="line"><span class="addition">+   Utils</span></span><br><span class="line"><span class="addition">+ &#125;;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">window.GSSWebChat = &#123;</span><br><span class="line">  createBasicWebChat,</span><br><span class="line">  createMinimizableWebChat,</span><br><span class="line">  clearStorage: Storage.clear</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>目的是希望別人引入時可以像這樣引入 Components 和 Utils 來做使用</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> GSSWebChat <span class="keyword">from</span> <span class="string">'build 出來的 js'</span></span><br><span class="line"><span class="keyword">const</span> &#123;Components,Utils&#125; = GSSWebChat</span><br></pre></td></tr></table></figure>
+
+<p>但是事與願違，這麼做會得到一片慘紅 QQ</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gj2pa8arsvj31010u0wxs.jpg" alt="截圖 2020-09-25 上午10.44.40"></p>
+<p>會這樣的原因是因為 webpack build 出來的 js 檔是不能用 <code>import/export</code> 這種方式引入的，也是過了好幾種不同的 webpack librarytarget 設定方式，像 <code>commonjs</code>、<code>umd</code>、<code>amd</code> 等都還是無法引入</p>
+<p><code>更新：</code></p>
+<p>後來發現如果將 <code>webpack.config.js</code> 的<code>mode</code> 改為 <code>development</code>就可以引入了，這部分之後要在研究一下</p>
+</li>
+</ul>
+<h3 id="尋找其他方法"><a href="#尋找其他方法" class="headerlink" title="尋找其他方法"></a>尋找其他方法</h3><p>後來想說那可不可以不要 build 成一包 js 檔，改放到 npm 上面給別人直接 <code>npm install</code> 下來當作一般套件做使用就可以了，但由於這項專案是公司產品，所以不能對外公開，但要自己架一個 private npm 好像有點麻煩，所以就上網查查有什麼別的方式，結果還真的被我找到了</p>
+<h3 id="npm-install-from-GitLab-GitHub"><a href="#npm-install-from-GitLab-GitHub" class="headerlink" title="npm install from GitLab/GitHub"></a>npm install from GitLab/GitHub</h3><p>先附上<a href="https://stackoverflow.com/questions/22988876/install-npm-module-from-gitlab-private-repository" target="_blank" rel="noopener">連結</a></p>
+<p>這個方法簡單來說就是將專案 build 好之後放到 GitLab/GitHub 上面，其他人可以透過</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install git+https://&lt;token-name&gt;:&lt;token&gt;@gitlab.com/Username/Repository#&#123;branch|tag&#125;</span><br></pre></td></tr></table></figure>
+
+<p>來安裝 GitLab 上面的某個專案，而且還可以預防外人安裝 xdd (因為要 access 到公司的 gitlab 需要有公司的帳號)</p>
+<p>要達成上面的功能有幾件事要做</p>
+<h4 id="Build-出專案"><a href="#Build-出專案" class="headerlink" title="Build 出專案"></a>Build 出專案</h4><p>首先，主管希望 build 出專案的工具用得越少越好，最好是原本 build <code>gss-webchat</code>會用到的工具就夠了，所以我只有利用 <code>tsc(typescript compiler)</code> 來做到這件事</p>
+<ol>
+<li><p>建立 tsconfig.gen-lib.json：將 typescript 轉換成 es5 的 js 檔</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"compilerOptions"</span>: &#123;</span><br><span class="line">        <span class="attr">"declaration"</span>: <span class="literal">true</span>, <span class="comment">// 加入這行才會順便產生出 .d.ts 讓 import 時有類別檔可以參考</span></span><br><span class="line">        <span class="attr">"outDir"</span>: <span class="string">"./lib/"</span>, <span class="comment">// 設定編譯完輸出的位址</span></span><br><span class="line">        <span class="attr">"module"</span>: <span class="string">"commonjs"</span>, <span class="comment">// 使用 commonjs (node 支援的型態)</span></span><br><span class="line">        <span class="attr">"target"</span>: <span class="string">"es5"</span>, <span class="comment">// 轉成 es5</span></span><br><span class="line">        <span class="attr">"jsx"</span>: <span class="string">"react"</span>, </span><br><span class="line">        <span class="attr">"esModuleInterop"</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">"lib"</span>: [</span><br><span class="line">            <span class="string">"dom"</span>,</span><br><span class="line">            <span class="string">"es2016"</span></span><br><span class="line">        ],</span><br><span class="line">        <span class="attr">"allowJs"</span>: <span class="literal">true</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="attr">"include"</span>: [<span class="string">"src/**/*"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在 package.json 的 <code>script</code> 中加入</p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> "scripts": &#123;</span><br><span class="line">		...</span><br><span class="line"><span class="addition">+   "build:lib": "tsc -p tsconfig.gen-lib.json &amp;&amp; npm run build:copy",</span></span><br><span class="line"><span class="addition">+   "build:copy": "cpx \"src/**/*.!(ts|tsx|js)\" \"./lib\" "</span></span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+
+<p>“build:lib”：將 ts 編譯成 js 檔</p>
+<p>“build:copy”： 由於 <code>tsc</code> 只能處理 js/ts 檔，所以像 css、json 這類的就需要自己複製過去，這邊使用 <a href="https://www.npmjs.com/package/cpx" target="_blank" rel="noopener"><code>cpx</code></a> 這個套件，使用前請先 npm install 到 devdependence 裡面</p>
+</li>
+<li><p>執行 <code>npm run build:lib</code> 來編譯，執行結果應該會像下面，將 ts 轉成 js，並且附上 .d.ts 檔</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gj3ti6q983j309c0b2t9g.jpg" alt="截圖 2020-09-26 上午9.56.25"></p>
+</li>
+<li><p>告訴 npm 這個套件的起始程式位址，在 package.json 中加入 <code>module</code> <code>types</code></p>
+<figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">   "name": "gss-webchat",</span><br><span class="line">   "version": "3.1.0",</span><br><span class="line">   "description": "",</span><br><span class="line">   "main": "index.js",</span><br><span class="line"><span class="addition">+  "module": "lib/index.js",</span></span><br><span class="line"><span class="addition">+  "types": "lib/index.d.ts",</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Push 到 gitlab 上面就可以讓大家安裝了</p>
+</li>
+<li><p>安裝下來後應該就可以看到有 auto complete 的選項了</p>
+</li>
+</ol>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gj3ucmjtfdj30j902gglx.jpg" alt="截圖 2020-09-26 上午10.25.27"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/react/" rel="tag"># react</a>
+              <a href="/tags/npm/" rel="tag"># npm</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/16/2020-07-16-%E4%BD%BF%E7%94%A8AzureCLI%E9%83%A8%E7%BD%B2WebApp/" rel="prev" title="部署到 Azure Web App 的方式">
+      <i class="fa fa-chevron-left"></i> 部署到 Azure Web App 的方式
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一開始定義的需求"><span class="nav-number">1.</span> <span class="nav-text">一開始定義的需求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#尋找其他方法"><span class="nav-number">2.</span> <span class="nav-text">尋找其他方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#npm-install-from-GitLab-GitHub"><span class="nav-number">3.</span> <span class="nav-text">npm install from GitLab&#x2F;GitHub</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Build-出專案"><span class="nav-number">3.1.</span> <span class="nav-text">Build 出專案</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">賢慧的雞塊</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">賢慧的雞塊</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

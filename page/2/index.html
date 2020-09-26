@@ -152,6 +152,71 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/05/29/2020-05-29_Heroku%E9%83%A8%E7%BD%B2mern-stack-app/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="賢慧的雞塊">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="賢慧的雞塊">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/05/29/2020-05-29_Heroku%E9%83%A8%E7%BD%B2mern-stack-app/" class="post-title-link" itemprop="url">Heroku 部署 mern stackapp</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-05-29 20:55:24 / Modified: 21:24:18" itemprop="dateCreated datePublished" datetime="2020-05-29T20:55:24+08:00">2020-05-29</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="in-package-json-add-below"><a href="#in-package-json-add-below" class="headerlink" title="in package.json add below"></a>in package.json add below</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"scripts": &#123;</span><br><span class="line">    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm run build &amp;&amp; npm install --prefix client &amp;&amp; npm run build --prefix client"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>NPM_CONFIG_PRODUCTION=false<br>  為了讓 heroku 執行這段 postbuild 需要將 env 改成不是 production</li>
+<li>npm run build<br>  如果 server 端是用 typescript 做的就要加這行先編譯 server 端</li>
+<li>npm install –prefix client &amp;&amp; npm run build –prefix client”<br>  如果前端是 react 或其他前端框架就要讓前端也先編譯好</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
     <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/05/29/2020-05-29_Nginx%E7%84%A1%E6%B3%95%E5%82%B3%E8%BC%B8%E5%A4%A7%E6%AA%94%E6%A1%88%E5%95%8F%E9%A1%8C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -355,14 +420,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

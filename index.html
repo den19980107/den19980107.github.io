@@ -152,6 +152,93 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/09/24/2020-09-24_%E5%A6%82%E4%BD%95%E5%B0%87React-Component-%E7%99%BC%E5%B8%83%E5%88%B0-npm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="賢慧的雞塊">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="賢慧的雞塊">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/24/2020-09-24_%E5%A6%82%E4%BD%95%E5%B0%87React-Component-%E7%99%BC%E5%B8%83%E5%88%B0-npm/" class="post-title-link" itemprop="url">如何將 React Component 發布到 npm</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-24 09:54:31" itemprop="dateCreated datePublished" datetime="2020-09-24T09:54:31+08:00">2020-09-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-26 10:27:17" itemprop="dateModified" datetime="2020-09-26T10:27:17+08:00">2020-09-26</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近剛結束公司的一個 issue，要將 gss-webchat (React 專案) 裡面的 component 讓其他 React 專案也可以做使用，在過程中踩到了幾個雷跟大家分享一下</p>
+<h3 id="一開始定義的需求"><a href="#一開始定義的需求" class="headerlink" title="一開始定義的需求"></a>一開始定義的需求</h3><p>原先我們這個專案就有用 webpack build 出一版 es5 的 js 檔提供其他專案(不是使用 react，一般 MVC 的那種)當作外部 js 引入即可直接做使用，這隻 js 有提供幾個功能</p>
+<ol>
+<li><p><code>GSSWebChat</code>：</p>
+<p>提供 <code>createBasicWebChat</code>、<code>createMinimizableWebChat</code>、 <code>clearStorage</code> 三個方法來讓使用者</p>
+<ul>
+<li>建立一般 webchat (沒有外匡，可自定義大小)</li>
+<li>MinimizableWebChat (可縮小放大的 webchat，縮小時會變成一個圓形小 icon 縮在螢幕角落)</li>
+<li>clearStorage (清空 webchat 所用到的 session storage， webchat 會將 user 資料存在這邊方便得知 user 是誰來載入歷史資料，清空則等於開啟新對話)</li>
+</ul>
+</li>
+<li><p>WebChatApi：</p>
+<p>提供使用者使用 BotFramework WebChat 原生方法</p>
+</li>
+</ol>
+<p>所以一開始希望我們 build 出來的這隻 js 檔可以同時被當作一般外部 js 引入，也可以當作 Component 被引入，所以做了以下的事情</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/09/24/2020-09-24_%E5%A6%82%E4%BD%95%E5%B0%87React-Component-%E7%99%BC%E5%B8%83%E5%88%B0-npm/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
     <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/07/16/2020-07-16-%E4%BD%BF%E7%94%A8AzureCLI%E9%83%A8%E7%BD%B2WebApp/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -898,71 +985,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
-    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/05/29/2020-05-29_Heroku%E9%83%A8%E7%BD%B2mern-stack-app/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="賢慧的雞塊">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="賢慧的雞塊">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/29/2020-05-29_Heroku%E9%83%A8%E7%BD%B2mern-stack-app/" class="post-title-link" itemprop="url">Heroku 部署 mern stackapp</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-05-29 20:55:24 / Modified: 21:24:18" itemprop="dateCreated datePublished" datetime="2020-05-29T20:55:24+08:00">2020-05-29</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="in-package-json-add-below"><a href="#in-package-json-add-below" class="headerlink" title="in package.json add below"></a>in package.json add below</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"scripts": &#123;</span><br><span class="line">    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm run build &amp;&amp; npm install --prefix client &amp;&amp; npm run build --prefix client"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>NPM_CONFIG_PRODUCTION=false<br>  為了讓 heroku 執行這段 postbuild 需要將 env 改成不是 production</li>
-<li>npm run build<br>  如果 server 端是用 typescript 做的就要加這行先編譯 server 端</li>
-<li>npm install –prefix client &amp;&amp; npm run build –prefix client”<br>  如果前端是 react 或其他前端框架就要讓前端也先編譯好</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1032,14 +1054,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
