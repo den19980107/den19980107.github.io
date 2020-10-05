@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gj3ti6q983j309c0b2t9g.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gj3ucmjtfdj30j902gglx.jpg">
 <meta property="article:published_time" content="2020-09-24T01:54:31.000Z">
-<meta property="article:modified_time" content="2020-09-26T02:27:17.574Z">
+<meta property="article:modified_time" content="2020-10-05T09:22:31.248Z">
 <meta property="article:author" content="賢慧的雞塊">
 <meta property="article:tag" content="react">
 <meta property="article:tag" content="npm">
@@ -193,7 +193,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-26 10:27:17" itemprop="dateModified" datetime="2020-09-26T10:27:17+08:00">2020-09-26</time>
+                <time title="Modified: 2020-10-05 17:22:31" itemprop="dateModified" datetime="2020-10-05T17:22:31+08:00">2020-10-05</time>
               </span>
 
           
@@ -209,6 +209,7 @@
       
         <p>最近剛結束公司的一個 issue，要將 gss-webchat (React 專案) 裡面的 component 讓其他 React 專案也可以做使用，在過程中踩到了幾個雷跟大家分享一下</p>
 <h3 id="一開始定義的需求"><a href="#一開始定義的需求" class="headerlink" title="一開始定義的需求"></a>一開始定義的需求</h3><p>原先我們這個專案就有用 webpack build 出一版 es5 的 js 檔提供其他專案(不是使用 react，一般 MVC 的那種)當作外部 js 引入即可直接做使用，這隻 js 有提供幾個功能</p>
+<a id="more"></a>
 <ol>
 <li><p><code>GSSWebChat</code>：</p>
 <p>提供 <code>createBasicWebChat</code>、<code>createMinimizableWebChat</code>、 <code>clearStorage</code> 三個方法來讓使用者</p>
@@ -223,8 +224,6 @@
 </li>
 </ol>
 <p>所以一開始希望我們 build 出來的這隻 js 檔可以同時被當作一般外部 js 引入，也可以當作 Component 被引入，所以做了以下的事情</p>
-<a id="more"></a>
-
 <ul>
 <li><p>在 export default 中加入 <code>Components</code>、<code>Utils</code> </p>
 <p>index.ts：</p>

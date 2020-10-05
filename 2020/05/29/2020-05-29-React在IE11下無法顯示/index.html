@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://i.imgur.com/Mjt1pNn.png">
 <meta property="og:image" content="https://i.imgur.com/cEAaep5.png">
 <meta property="article:published_time" content="2020-05-29T13:25:37.000Z">
-<meta property="article:modified_time" content="2020-05-29T13:44:47.131Z">
+<meta property="article:modified_time" content="2020-10-05T09:21:33.037Z">
 <meta property="article:author" content="賢慧的雞塊">
 <meta property="article:tag" content="react">
 <meta name="twitter:card" content="summary">
@@ -183,10 +183,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-05-29 21:25:37 / Modified: 21:44:47" itemprop="dateCreated datePublished" datetime="2020-05-29T21:25:37+08:00">2020-05-29</time>
+              <time title="Created: 2020-05-29 21:25:37" itemprop="dateCreated datePublished" datetime="2020-05-29T21:25:37+08:00">2020-05-29</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-10-05 17:21:33" itemprop="dateModified" datetime="2020-10-05T17:21:33+08:00">2020-10-05</time>
+              </span>
 
           
 
@@ -202,6 +208,7 @@
         <p><img src="https://i.imgur.com/Mjt1pNn.png" alt=""></p>
 <h2 id="錯誤訊息"><a href="#錯誤訊息" class="headerlink" title="錯誤訊息"></a>錯誤訊息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">typeof Symbol&amp;&amp;Symbol.for&amp;&amp;Symbol.for(&quot;react.element&quot;)||60103</span><br></pre></td></tr></table></figure>
 <p>會出現這個問題的原因是因為 react 和 react-dom　所使用的 polyfill　的版本不同<br>需要在 webpack.config =&gt; entry　中的第一行加入所要用的 polyfill　版本</p>
+<a id="more"></a>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">entry: [</span><br><span class="line"> &#39;babel-polyfill&#39;, &#x2F;&#x2F; Load this first</span><br><span class="line"> &#39;react-hot-loader&#x2F;patch&#39;, &#x2F;&#x2F; This package already requires&#x2F;loads react (but not react-dom). It must be loaded after babel-polyfill to ensure both react and react-dom use the same Symbol.</span><br><span class="line"> &#39;react&#39;, &#x2F;&#x2F; Include this to enforce order</span><br><span class="line"> &#39;react-dom&#39;, &#x2F;&#x2F; Include this to enforce order</span><br><span class="line"> &#39;.&#x2F;index.js&#39; &#x2F;&#x2F; Path to your app&#39;s entry file</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 <p>or somthing like this</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">entry: [</span><br><span class="line">      require.resolve(&#39;react-app-polyfill&#x2F;ie11&#39;),</span><br><span class="line">      isEnvDevelopment &amp;&amp;</span><br><span class="line">      require.resolve(&#39;react-dev-utils&#x2F;webpackHotDevClient&#39;),</span><br><span class="line">      paths.appIndexJs,</span><br><span class="line">],</span><br></pre></td></tr></table></figure>

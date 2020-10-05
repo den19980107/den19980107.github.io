@@ -175,10 +175,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-05-29 20:55:24 / Modified: 21:24:18" itemprop="dateCreated datePublished" datetime="2020-05-29T20:55:24+08:00">2020-05-29</time>
+              <time title="Created: 2020-05-29 20:55:24" itemprop="dateCreated datePublished" datetime="2020-05-29T20:55:24+08:00">2020-05-29</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-10-05 17:20:20" itemprop="dateModified" datetime="2020-10-05T17:20:20+08:00">2020-10-05</time>
+              </span>
 
           
 
@@ -192,13 +198,14 @@
 
       
           <h2 id="in-package-json-add-below"><a href="#in-package-json-add-below" class="headerlink" title="in package.json add below"></a>in package.json add below</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"scripts": &#123;</span><br><span class="line">    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm run build &amp;&amp; npm install --prefix client &amp;&amp; npm run build --prefix client"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>NPM_CONFIG_PRODUCTION=false<br>  為了讓 heroku 執行這段 postbuild 需要將 env 改成不是 production</li>
-<li>npm run build<br>  如果 server 端是用 typescript 做的就要加這行先編譯 server 端</li>
-<li>npm install –prefix client &amp;&amp; npm run build –prefix client”<br>  如果前端是 react 或其他前端框架就要讓前端也先編譯好</li>
-</ul>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/05/29/2020-05-29_Heroku%E9%83%A8%E7%BD%B2mern-stack-app/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -240,10 +247,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-05-29 20:54:10 / Modified: 21:24:22" itemprop="dateCreated datePublished" datetime="2020-05-29T20:54:10+08:00">2020-05-29</time>
+              <time title="Created: 2020-05-29 20:54:10" itemprop="dateCreated datePublished" datetime="2020-05-29T20:54:10+08:00">2020-05-29</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-10-05 17:20:29" itemprop="dateModified" datetime="2020-10-05T17:20:29+08:00">2020-10-05</time>
+              </span>
 
           
 
@@ -258,10 +271,14 @@
       
           <p>在做 icoding 的時候常常會需要上傳影片到平台上，本機測試的時候影片可以上傳成功，但當網站部署到伺服器後，上傳影片卻失敗，資料庫一直沒有出現影片的資料</p>
 <h2 id="前端噴的錯誤訊息"><a href="#前端噴的錯誤訊息" class="headerlink" title="前端噴的錯誤訊息"></a>前端噴的錯誤訊息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">413 Request Entity Too Large</span><br></pre></td></tr></table></figure>
-
-<h2 id="問題原因："><a href="#問題原因：" class="headerlink" title="問題原因："></a>問題原因：</h2><p>在 nginx 中有預設可上傳檔案的大小2M，如果今天影片超過此大小便會上傳不成功</p>
-<h2 id="解決辦法："><a href="#解決辦法：" class="headerlink" title="解決辦法："></a>解決辦法：</h2><p>在 nginx.conf 檔案中 http，server 或者 location 段中加入以下指令，可調整 nginx 可接受的檔案大小</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># set client body size to 8M #</span><br><span class="line">client_max_body_size 8M;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/05/29/2020-05-29_Nginx%E7%84%A1%E6%B3%95%E5%82%B3%E8%BC%B8%E5%A4%A7%E6%AA%94%E6%A1%88%E5%95%8F%E9%A1%8C/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -311,7 +328,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-06-02 12:23:25" itemprop="dateModified" datetime="2020-06-02T12:23:25+08:00">2020-06-02</time>
+                <time title="Modified: 2020-10-05 17:20:43" itemprop="dateModified" datetime="2020-10-05T17:20:43+08:00">2020-10-05</time>
               </span>
 
           
@@ -326,9 +343,11 @@
 
       
           <ol>
-<li>安裝 <a href="http://nginx.org/en/download.html" target="_blank" rel="noopener">nginx</a></li>
-<li>on 起你的 app (假設為一個 node server on 在 localhost:5000)</li>
-<li>設定 nginx.conf (在下載下來的 nginx根目錄/conf 裡面) 下面的設定檔的意思是監聽 port 80，如果有從 80 進來的，轉跳到 port 5000<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">events&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">http &#123;</span><br><span class="line">    server &#123;</span><br><span class="line">        listen 80 default_server;</span><br><span class="line">        listen [::]:80 default_server;</span><br><span class="line">        server_name localhost;</span><br><span class="line">        # set client body size to 100M #</span><br><span class="line">        client_max_body_size 100M;</span><br><span class="line">        location &#x2F; &#123;</span><br><span class="line">                proxy_pass http:&#x2F;&#x2F;localhost:5000; #whatever port your app runs on</span><br><span class="line">                proxy_http_version 1.1;</span><br><span class="line">                proxy_set_header Upgrade $http_upgrade;</span><br><span class="line">                proxy_set_header Connection &#39;upgrade&#39;;</span><br><span class="line">                proxy_set_header Host $host;</span><br><span class="line">                proxy_cache_bypass $http_upgrade;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li><p>安裝 <a href="http://nginx.org/en/download.html" target="_blank" rel="noopener">nginx</a></p>
+</li>
+<li><p>on 起你的 app (假設為一個 node server on 在 localhost:5000)</p>
+</li>
+<li><p>設定 nginx.conf (在下載下來的 nginx根目錄/conf 裡面) 下面的設定檔的意思是監聽 port 80，如果有從 80 進來的，轉跳到 port 5000</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/05/29/2020-05-29_Nginx%E8%A3%BD%E4%BD%9CHomeServer/#more" rel="contents">
