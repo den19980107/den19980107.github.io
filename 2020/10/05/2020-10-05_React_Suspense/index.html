@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+<meta name="google-site-verification" content="QAo6YRDFuJzlaT-cDxw05ccSr7wt3h1iwbmffshWUOY" />
+<script data-ad-client="ca-pub-8963208625930704" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"den19980107.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="在 React Conf 2019 React 介紹了許多關於 Concurrent Mode、Suspense for Data Fetching 的資訊 今天我們主要介紹一下 Suspense for Data Fetching  再往下看之前可以先看看官網的文章 今天介紹的主題主要以下面三個題目  Suspense 是什麼 Suspense for data fetching Supspen">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2020-10-05_React_Suspense">
+<meta property="og:url" content="https://den19980107.github.io/2020/10/05/2020-10-05_React_Suspense/index.html">
+<meta property="og:site_name" content="賢慧的雞塊">
+<meta property="og:description" content="在 React Conf 2019 React 介紹了許多關於 Concurrent Mode、Suspense for Data Fetching 的資訊 今天我們主要介紹一下 Suspense for Data Fetching  再往下看之前可以先看看官網的文章 今天介紹的主題主要以下面三個題目  Suspense 是什麼 Suspense for data fetching Supspen">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjej1u3rcnj311g08wju5.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjeja0a3qyj30wo05emy8.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjejacj2dpj30b20iwgnz.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjejap4ad3j31020e4jsg.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjejecv3tmg30m10b6tnh.gif">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjejlxd0rij30ke0d876g.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjejmql5loj30ty0xq4cx.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjejuggj9xj315q0g60u2.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjejvumiorg30m10b6thq.gif">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjek419e0xj30pm0dutbf.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjek4h94unj30gy08y75v.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjek51tm6yj30gs0t2dkj.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjek71gi49j30gu04qaba.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjek78vv8uj30xg0csjsi.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjek8mag6ig30m10b67da.gif">
+<meta property="og:image" content="https://miro.medium.com/max/500/1*gd--3teohgo1s7Kp5phHGw.gif">
+<meta property="og:image" content="https://miro.medium.com/max/500/1*c-kVZl4kJWYvcDfpe3pF0A.gif">
+<meta property="og:image" content="https://miro.medium.com/max/500/1*ah0sBS-aUczbuuaisx3uYQ.gif">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjekhw406qj30h00u0aec.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjekj3ys6wg30co05rdnj.gif">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjekncosblg30dw07dngf.gif">
+<meta property="article:published_time" content="2020-10-05T08:06:28.000Z">
+<meta property="article:modified_time" content="2020-10-05T09:28:48.388Z">
+<meta property="article:author" content="賢慧的雞塊">
+<meta property="article:tag" content="react">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjej1u3rcnj311g08wju5.jpg">
+
+<link rel="canonical" href="https://den19980107.github.io/2020/10/05/2020-10-05_React_Suspense/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>2020-10-05_React_Suspense | 賢慧的雞塊</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">賢慧的雞塊</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/10/05/2020-10-05_React_Suspense/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="賢慧的雞塊">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="賢慧的雞塊">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2020-10-05_React_Suspense
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-10-05 16:06:28 / Modified: 17:28:48" itemprop="dateCreated datePublished" datetime="2020-10-05T16:06:28+08:00">2020-10-05</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>在 React Conf 2019 React 介紹了許多關於 <strong>Concurrent Mode</strong>、<strong>Suspense for Data Fetching</strong> 的資訊</p>
+<p>今天我們主要介紹一下 <strong>Suspense for Data Fetching</strong> </p>
+<p>再往下看之前可以先看看官網的<a href="https://reactjs.org/docs/concurrent-mode-intro.html" target="_blank" rel="noopener">文章</a></p>
+<p>今天介紹的主題主要以下面三個題目</p>
+<ul>
+<li><strong>Suspense 是什麼</strong></li>
+<li><strong>Suspense for data fetching</strong></li>
+<li><strong>Supspense 可以做到什麼</strong></li>
+</ul>
+<a id="more"></a>
+
+<hr>
+<h2 id="Suspense-是什麼"><a href="#Suspense-是什麼" class="headerlink" title="Suspense 是什麼"></a>Suspense 是什麼</h2><p>Suspense是一個可以讓還沒準備好可以 render 的 UI 可以顯示為 loading，主要要解決兩個問題</p>
+<ol>
+<li>Code Split (延後程式碼載入)</li>
+<li>Data Fetching</li>
+</ol>
+<p>Code Split 的部分，由於 React 做出來的網頁是 SPA，在進入網頁是會將所有頁面需要的程式碼都下載下來，但當 web app 越做越大，需要下載的程式碼也越大，為了解決這個問題 React 提出了 Code Split (延後程式碼載入) 的方法來讓還不需要使用到的 component 可以等到需要再下載下來。</p>
+<p>例如一個網站可能有 <strong>首頁</strong>、<strong>個人資料頁面</strong> 等等，一開始進來可能只需要到首頁，就可以使用 lazy import 的方法，等到頁面切換到 <strong>個人資料頁面</strong> 時再將需要的 component 載入。</p>
+<p>React v16.6 時已經解決了 Code Split 的問題，像是下面使用 React.lazy 載入 component，當 component 還沒載入完成時，會顯示 fallback 裡面的 Spinner。</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjej1u3rcnj311g08wju5.jpg" alt="image-20201005161556527"> </p>
+<p>不過今天主要要講的是 Data Fetching 的部分</p>
+<h2 id="Suspense-for-data-fetching"><a href="#Suspense-for-data-fetching" class="headerlink" title="Suspense for data fetching"></a>Suspense for data fetching</h2><p>這邊先來介紹一下 React 在撈資料的三種方法</p>
+<ol>
+<li>Fetch-On-Render</li>
+<li>Fetch-Then-Render</li>
+<li>Render-As-You-Fetch</li>
+</ol>
+<h3 id="Fetch-On-Render"><a href="#Fetch-On-Render" class="headerlink" title="Fetch-On-Render"></a>Fetch-On-Render</h3><p>使用 componentDidMount 或是 useEffect 去抓資料就是屬於這種，在這三種方法裡面這個方法是屬於效率/體驗最差的，Render 之後再去呼叫 API</p>
+<p>如下：</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjeja0a3qyj30wo05emy8.jpg" alt="image-20201005162350776"></p>
+<p>假設今天每一個 Component 都有一個 useEffect 來撈資料，並且層層疊再一起時還會發生抓資料的 water fall</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjejacj2dpj30b20iwgnz.jpg" alt="image-20201005162410574"></p>
+<p>Render 的流程就會像下面這樣需要的上層 component 的 fetch 完成下面才能開始 fetch</p>
+<p>fetch user =&gt; 等 =&gt;完成 =&gt; fetch Post =&gt; 等 =&gt; 完成</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjejap4ad3j31020e4jsg.jpg" alt="image-20201005162430657"></p>
+<p>Fetch-on-Render 效果如下：</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjejecv3tmg30m10b6tnh.gif" alt="1"></p>
+<p>這邊可以注意看一下 Console 顯示的時間，我是將 fetch user 跟 fetch post 的時間設為固定的（就是假的 api 拉，設定過幾秒再回傳）</p>
+<p>fetch user 需要花費 <strong>1</strong> 秒，fetch post 需要花費 <strong>2</strong> 秒，而 console 顯示得時間是從頁面載入後完成這個 fetch 已經過了多久</p>
+<p>以上面的圖為例，由於要等上層 component fetch 完才能 fetch 下層的 component 需要的資料，所以總時長就是 1+ 2 =3 秒</p>
+<h3 id="Fetch-Then-Render"><a href="#Fetch-Then-Render" class="headerlink" title="Fetch-Then-Render"></a>Fetch-Then-Render</h3><p>上面我們看到 fetch-on-render 的缺點是必須等到 render 完成之後才能 fetch 資料，且上層 component 還沒 render 完成之前下層的都不能 fetch 資料，我們可以透過一些 Library （像是 GraphQL or Relay）可以一次拿到 Profile 和 Post 的資料再 render 出來，不過這邊我們不使用這些 Library 而是做出一個類似的範例</p>
+<p>將 fetchUser 和 fetchPosts 用 promise.all 包起來達到一起呼叫的功能</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjejlxd0rij30ke0d876g.jpg" alt="image-20201005163517615"></p>
+<p>而在 component 中的使用如下：</p>
+<p>注意到我們是在 render 之前 fetch 資料，等到 render 之後才取資料</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjejmql5loj30ty0xq4cx.jpg" alt="image-20201005163517615"></p>
+<p>Render 的流程如下</p>
+<p>fetchUser =&gt;fetchPost =&gt; 等 =&gt; 完成 fetchUser =&gt;完成 fetchPost </p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjejuggj9xj315q0g60u2.jpg" alt="image-20201005164329404"></p>
+<p>render 的效果如下：</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjejvumiorg30m10b6thq.gif" alt="2"></p>
+<p>可以看到這次總花費時間變成只有兩秒了(gif 有點快可能要看仔細一點)</p>
+<p>雖然目前解決了需要等到上層 component fetch 完資料後，下層才能呼叫的問題，但也產生了另外一個問題</p>
+<p>就是我們必須要等 fetchUser 和 fetchPost 都完成後才能顯示東西，因為我們使用 Promise.all</p>
+<h3 id="Render-As-You-Fetch"><a href="#Render-As-You-Fetch" class="headerlink" title="Render-As-You-Fetch"></a>Render-As-You-Fetch</h3><p>在上一個步驟我們先 fetch 資料才呼叫 setState</p>
+<ol>
+<li><p>Start Fetching</p>
+</li>
+<li><p>Finish Fetching</p>
+</li>
+<li><p>Render</p>
+</li>
+</ol>
+<p>在這邊我們使用 suspense，一樣，先 fetch 資料，不過這次不等資料回來，我們先 render</p>
+<ol>
+<li><p>Start Fetching</p>
+</li>
+<li><p>Render</p>
+</li>
+<li><p>Finish Fetching</p>
+</li>
+</ol>
+<p>使用 <strong>Suspense</strong> 的程式碼如下：</p>
+<p>![image-20201005165232874](/Users/den19980107/Library/Application Support/typora-user-images/image-20201005165232874.png)</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjek419e0xj30pm0dutbf.jpg" alt="image-20201005165242565"></p>
+<p>createResource 這個物件我們等等再解釋，現在先把他想像成一個神奇的物件，以 resource.user.read() 來解釋</p>
+<p>呼叫 resource.user.read() 會檢查是否已經 fetch 到 user 的資料了，如果有資料，會 throw user 的資料，如果沒有，會 throw 一個 Promise</p>
+<p>注意到我這邊用的是 throw ，這樣就很好解釋 Suspense 的原理了。</p>
+<p>可以把 Suspense 想像成一個 component 的 try catch</p>
+<p>Like this:</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjek4h94unj30gy08y75v.jpg" alt="image-20201005165308300"></p>
+<p>而 createSource 的實作方法如下：</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjek51tm6yj30gs0t2dkj.jpg" alt="image-20201005165340798"></p>
+<p>簡單來說就是用 wrapPromise 包住 fetch，使用 read 時如果還在 fetch 會 throw promise，不過這部分 React 還在調整，目前沒有確定一定要這樣做，所以可以先不用參考，只要知道是用類似的方法達成的就可以了</p>
+<p>再來 Suspense 是有 <strong>顯示</strong> 順序的，以下面的圖為例，顯示的順序為 外層的 ProfileDetails =&gt; 內層的 Posts</p>
+<p>這樣的好處是我們可以控制什麼東西需要先顯示，例如這邊的例子，希望先顯示 user 名稱，才顯示他寫的文章</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjek71gi49j30gu04qaba.jpg" alt="image-20201005165536164"></p>
+<p>流程如下：</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjek78vv8uj30xg0csjsi.jpg" alt="image-20201005165547955"></p>
+<p>顯示的效果如下：</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjek8mag6ig30m10b67da.gif" alt="3"></p>
+<p>可以看到現在只要作者名稱撈到資料了就會先顯示，如果文章還沒撈到會顯示 loading，且如果是文章先撈到，也會等使用者名稱撈到在顯示</p>
+<h2 id="Suspense-可以做到什麼"><a href="#Suspense-可以做到什麼" class="headerlink" title="Suspense 可以做到什麼"></a>Suspense 可以做到什麼</h2><ol>
+<li><p>提早 fetch </p>
+<p>從剛剛的流程圖我們可以看到使用 suspense 不但可以同時撈資料，且不需等全部資料回傳才能顯示</p>
+</li>
+<li><p>設定顯示的順序</p>
+<p>下面的三張圖是 React Conf 上面的範例圖片，可以看到使用 Suspense 對於 UI 的體驗有非常大的提升</p>
+<p><img src="https://miro.medium.com/max/500/1*gd--3teohgo1s7Kp5phHGw.gif" alt="Image for post"></p>
+<p><img src="https://miro.medium.com/max/500/1*c-kVZl4kJWYvcDfpe3pF0A.gif" alt="Image for post"></p>
+<p><img src="https://miro.medium.com/max/500/1*ah0sBS-aUczbuuaisx3uYQ.gif" alt="Image for post"></p>
+</li>
+<li><p>解決 race condition</p>
+<p>假設目前有兩個 Component，一個顯示作者名稱，一個顯示作者文章，當 id 改變時會重新 fetch 資料，這個時候假設 fetchUser 比 fetchPosts 慢，就會發生明明上面顯示的是 A 作者，卻顯示 B 作者寫的文章</p>
+<p>程式碼如下：</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjekhw406qj30h00u0aec.jpg" alt="image-20201005170601578"></p>
+<p>效果如下：</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjekj3ys6wg30co05rdnj.gif" alt="4"></p>
+<p>這邊這個範例是有兩個 component，這兩個 component 都會根據 id 的變化來撈資料，例如 ProfilePage 這個 component 就是當 id 變化時撈使用者資料，並顯示使用者名稱，Post 這個 component 就是當 id 變化時撈使用者寫的文章</p>
+</li>
+</ol>
+<p>   由於兩個 component 的撈資料是分開進行的，所以會造成明明是 A user 的名字卻顯示 B user 得文章，如同上方 gif 顯示的效果。</p>
+<p>   使用 Suspense 之後我們就可以確保兩個 fetch 是同時執行去抓資料，並且不論誰先抓到資料，也會照我們想要的順序顯示</p>
+<p>   ![image-20201005171018111](/Users/den19980107/Library/Application Support/typora-user-images/image-20201005171018111.png)</p>
+<p>   顯示效果如下：</p>
+<p>   <img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjekncosblg30dw07dngf.gif" alt="5"></p>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>   有關 Supense 的介紹就到這邊，謝謝從頭看完的人！如果有說的不對的部分再麻煩指證</p>
+<p>   參考資料如下：</p>
+<ul>
+<li><p><a href="https://reactjs.org/docs/concurrent-mode-intro.html" target="_blank" rel="noopener">https://reactjs.org/docs/concurrent-mode-intro.html</a></p>
+</li>
+<li><p><a href="https://www.youtube.com/watch?v=Tl0S7QkxFE4&amp;t=763s" target="_blank" rel="noopener">https://www.youtube.com/watch?v=Tl0S7QkxFE4&amp;t=763s</a></p>
+</li>
+<li><p><a href="https://medium.com/@chentsulin/%E7%90%86%E8%A7%A3-react-%E7%9A%84%E4%B8%8B%E4%B8%80%E6%AD%A5-concurrent-mode-%E8%88%87-suspense-327b8a3df0fe" target="_blank" rel="noopener">https://medium.com/@chentsulin/%E7%90%86%E8%A7%A3-react-%E7%9A%84%E4%B8%8B%E4%B8%80%E6%AD%A5-concurrent-mode-%E8%88%87-suspense-327b8a3df0fe</a></p>
+</li>
+</ul>
+<p>   <a href="https://github.com/den19980107" target="_blank" rel="noopener">我的 GitHub</a></p>
+<p>   <a href="https://den19980107.github.io/">我的 Blog</a></p>
+<p>   ​            </p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/react/" rel="tag"># react</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/24/2020-09-24_%E5%A6%82%E4%BD%95%E5%B0%87React-Component-%E7%99%BC%E5%B8%83%E5%88%B0-npm/" rel="prev" title="如何將 React Component 發布到 npm">
+      <i class="fa fa-chevron-left"></i> 如何將 React Component 發布到 npm
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Suspense-是什麼"><span class="nav-number">1.</span> <span class="nav-text">Suspense 是什麼</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Suspense-for-data-fetching"><span class="nav-number">2.</span> <span class="nav-text">Suspense for data fetching</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Fetch-On-Render"><span class="nav-number">2.1.</span> <span class="nav-text">Fetch-On-Render</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fetch-Then-Render"><span class="nav-number">2.2.</span> <span class="nav-text">Fetch-Then-Render</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Render-As-You-Fetch"><span class="nav-number">2.3.</span> <span class="nav-text">Render-As-You-Fetch</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Suspense-可以做到什麼"><span class="nav-number">3.</span> <span class="nav-text">Suspense 可以做到什麼</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#結語"><span class="nav-number">4.</span> <span class="nav-text">結語</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">賢慧的雞塊</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">賢慧的雞塊</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
