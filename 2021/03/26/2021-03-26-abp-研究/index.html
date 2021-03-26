@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+<meta name="google-site-verification" content="QAo6YRDFuJzlaT-cDxw05ccSr7wt3h1iwbmffshWUOY" />
+<script data-ad-client="ca-pub-8963208625930704" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"den19980107.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="這個筆記會紀錄在研究 ABP Framework 時遇到的問題Setup Your Development Environment一開始跟這官方教學先設置一些環境 https:&#x2F;&#x2F;docs.abp.io&#x2F;en&#x2F;abp&#x2F;latest&#x2F;Getting-Started-Setup-Environment?UI&#x3D;MVC&amp;DB&#x3D;EF&amp;Tiered&#x3D;No  在安裝 abp cli 時發現即使安">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2021-03-26_abp_研究">
+<meta property="og:url" content="https://den19980107.github.io/2021/03/26/2021-03-26-abp-%E7%A0%94%E7%A9%B6/index.html">
+<meta property="og:site_name" content="賢慧的雞塊">
+<meta property="og:description" content="這個筆記會紀錄在研究 ABP Framework 時遇到的問題Setup Your Development Environment一開始跟這官方教學先設置一些環境 https:&#x2F;&#x2F;docs.abp.io&#x2F;en&#x2F;abp&#x2F;latest&#x2F;Getting-Started-Setup-Environment?UI&#x3D;MVC&amp;DB&#x3D;EF&amp;Tiered&#x3D;No  在安裝 abp cli 時發現即使安">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1goxbea4ij0j30t50ajwfn.jpg">
+<meta property="og:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1goxc71loohj31gy0qg427.jpg">
+<meta property="article:published_time" content="2021-03-26T07:32:47.000Z">
+<meta property="article:modified_time" content="2021-03-26T07:32:54.770Z">
+<meta property="article:author" content="賢慧的雞塊">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tva1.sinaimg.cn/large/008eGmZEgy1goxbea4ij0j30t50ajwfn.jpg">
+
+<link rel="canonical" href="https://den19980107.github.io/2021/03/26/2021-03-26-abp-%E7%A0%94%E7%A9%B6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>2021-03-26_abp_研究 | 賢慧的雞塊</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">賢慧的雞塊</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2021/03/26/2021-03-26-abp-%E7%A0%94%E7%A9%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="賢慧的雞塊">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="賢慧的雞塊">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2021-03-26_abp_研究
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-03-26 15:32:47 / Modified: 15:32:54" itemprop="dateCreated datePublished" datetime="2021-03-26T15:32:47+08:00">2021-03-26</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="這個筆記會紀錄在研究-ABP-Framework-時遇到的問題"><a href="#這個筆記會紀錄在研究-ABP-Framework-時遇到的問題" class="headerlink" title="這個筆記會紀錄在研究 ABP Framework 時遇到的問題"></a>這個筆記會紀錄在研究 ABP Framework 時遇到的問題</h1><h2 id="Setup-Your-Development-Environment"><a href="#Setup-Your-Development-Environment" class="headerlink" title="Setup Your Development Environment"></a>Setup Your Development Environment</h2><p>一開始跟這官方教學先設置一些環境</p>
+<p><a href="https://docs.abp.io/en/abp/latest/Getting-Started-Setup-Environment?UI=MVC&amp;DB=EF&amp;Tiered=No" target="_blank" rel="noopener">https://docs.abp.io/en/abp/latest/Getting-Started-Setup-Environment?UI=MVC&amp;DB=EF&amp;Tiered=No</a></p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1goxbea4ij0j30t50ajwfn.jpg" alt="截圖 2021-03-26 下午2.57.06"></p>
+<p>在安裝 abp cli 時發現即使安裝完在終端機輸入 <code>abp new ...</code> 會出現 command not found</p>
+<p>問題應該是沒有將 abp 的路徑 export 到系統 path 中，照著這個<a href="https://docs.abp.io/en/abp/latest/Getting-Started-Setup-Environment?UI=MVC&DB=EF&Tiered=No" target="_blank" rel="noopener">連結</a>做就可以使用 abp cli 了</p>
+<h2 id="Create-a-New-Project"><a href="#Create-a-New-Project" class="headerlink" title="Create a New Project"></a>Create a New Project</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">abp new Acme.BookStore</span><br></pre></td></tr></table></figure>
+
+<p>這邊沒什麼問題，使用這條指令會自動建立一個 abp 範例專案</p>
+<h2 id="Running-the-solution"><a href="#Running-the-solution" class="headerlink" title="Running the solution"></a>Running the solution</h2><h3 id="準備資料庫"><a href="#準備資料庫" class="headerlink" title="準備資料庫"></a>準備資料庫</h3><p>這邊一開始要在資料庫建立一個 db 並命名為 <code>BookStore</code></p>
+<p>再來要使用 abp 提供的 db migration 工具，這邊也遇到一個問題，由於我是在 m1 mac 使用，使用的環境是</p>
+<ul>
+<li>IDE: Visual Studio for Mac</li>
+<li>DataBase: docker 內裝 <a href="https://hub.docker.com/_/microsoft-azure-sql-edge" target="_blank" rel="noopener">azure-sql-edge</a> (由於 m1 mac 似乎沒辦法裝 mssql server 的 image，azure-sql-edge 是一個支援 arm 的 image，功能與 mssql server 相同但有些限制，但我沒有深入去研究有哪些限制，不過目前來看跑起來跟一班的 mssql server 差不多)</li>
+</ul>
+<p>在官方文件中 connection string 的設定方法是寫這樣</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"ConnectionStrings": &#123;</span><br><span class="line">  "Default": "Server=localhost;Database=BookStore;Trusted_Connection=True"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由於我的 db 有設帳號密碼所以我的版本是這樣</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"ConnectionStrings": &#123;</span><br><span class="line">  "Default": "Server=localhost,1433; Database=BoilerplateDb; User=sa; Password=&lt;YourStrong@Passw0rd&gt;"</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p>這邊的 <code>Trusted_Connection=True</code> 和 localhost,1433 是我後來修改的</p>
+<p>Trusted_Connection=True  如果有填寫的話會造成下面這個錯誤</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cannot authenticate using Kerberos. Ensure Kerberos has been initialized on the client with &#39;kinit&#39; and a Service Principal Name has been registered for the SQL Server to allow Kerberos authentication. ErrorCode&#x3D;InternalError, Exception&#x3D;Interop+NetSecurityNative+GssApiException: GSSAPI operation failed with error - An unsupported mechanism was requested (unknown mech-code 0 for mech unknown).</span><br></pre></td></tr></table></figure>
+
+<p>要解決的話就是把 Trusted_Connection=True 拿掉即可 <a href="https://stackoverflow.com/a/55715991" target="_blank" rel="noopener">參考連結</a></p>
+<p>Localhost,1433 如果不像這樣指定 port 會連不到，所以只好在後面指定</p>
+<p>上面的 connection string 都設定完後就可以運行 DbMigration 這個專案，成功的話應該會看到下面的內容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">den19980107@den19980107s-MacBook-Pro Acme.BookStore.DbMigrator % dotnet run </span><br><span class="line">[15:22:05 INF] Started database migrations...</span><br><span class="line">[15:22:05 INF] Migrating schema for host database...</span><br><span class="line">[15:22:07 INF] Executing host database seed...</span><br><span class="line">[15:22:10 INF] Successfully completed host database migrations.</span><br><span class="line">[15:22:10 INF] Successfully completed all database migrations.</span><br><span class="line">[15:22:10 INF] You can safely end this process...</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="運行-app"><a href="#運行-app" class="headerlink" title="運行 app"></a>運行 app</h3><p>在 <code>.Web</code> 這個專案下面跑 <code>dotnet run</code> 即可將 app 跑起來，注意的是 .Web 也有一個自己的 connection string，要記得改成跟上面一樣的</p>
+<p>這個步驟沒有遇到什麼問題，很正常的跑起來了</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1goxc71loohj31gy0qg427.jpg" alt="截圖 2021-03-26 下午3.26.10"></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/05/2020-10-05_React_Suspense/" rel="prev" title="2020-10-05_React_Suspense">
+      <i class="fa fa-chevron-left"></i> 2020-10-05_React_Suspense
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#這個筆記會紀錄在研究-ABP-Framework-時遇到的問題"><span class="nav-number">1.</span> <span class="nav-text">這個筆記會紀錄在研究 ABP Framework 時遇到的問題</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Setup-Your-Development-Environment"><span class="nav-number">1.1.</span> <span class="nav-text">Setup Your Development Environment</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Create-a-New-Project"><span class="nav-number">1.2.</span> <span class="nav-text">Create a New Project</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Running-the-solution"><span class="nav-number">1.3.</span> <span class="nav-text">Running the solution</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#準備資料庫"><span class="nav-number">1.3.1.</span> <span class="nav-text">準備資料庫</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#運行-app"><span class="nav-number">1.3.2.</span> <span class="nav-text">運行 app</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">賢慧的雞塊</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">賢慧的雞塊</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

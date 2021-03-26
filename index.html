@@ -152,6 +152,98 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2021/03/26/2021-03-26-abp-%E7%A0%94%E7%A9%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="賢慧的雞塊">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="賢慧的雞塊">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/03/26/2021-03-26-abp-%E7%A0%94%E7%A9%B6/" class="post-title-link" itemprop="url">2021-03-26_abp_研究</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-03-26 15:32:47 / Modified: 15:32:54" itemprop="dateCreated datePublished" datetime="2021-03-26T15:32:47+08:00">2021-03-26</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="這個筆記會紀錄在研究-ABP-Framework-時遇到的問題"><a href="#這個筆記會紀錄在研究-ABP-Framework-時遇到的問題" class="headerlink" title="這個筆記會紀錄在研究 ABP Framework 時遇到的問題"></a>這個筆記會紀錄在研究 ABP Framework 時遇到的問題</h1><h2 id="Setup-Your-Development-Environment"><a href="#Setup-Your-Development-Environment" class="headerlink" title="Setup Your Development Environment"></a>Setup Your Development Environment</h2><p>一開始跟這官方教學先設置一些環境</p>
+<p><a href="https://docs.abp.io/en/abp/latest/Getting-Started-Setup-Environment?UI=MVC&amp;DB=EF&amp;Tiered=No" target="_blank" rel="noopener">https://docs.abp.io/en/abp/latest/Getting-Started-Setup-Environment?UI=MVC&amp;DB=EF&amp;Tiered=No</a></p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1goxbea4ij0j30t50ajwfn.jpg" alt="截圖 2021-03-26 下午2.57.06"></p>
+<p>在安裝 abp cli 時發現即使安裝完在終端機輸入 <code>abp new ...</code> 會出現 command not found</p>
+<p>問題應該是沒有將 abp 的路徑 export 到系統 path 中，照著這個<a href="https://docs.abp.io/en/abp/latest/Getting-Started-Setup-Environment?UI=MVC&DB=EF&Tiered=No" target="_blank" rel="noopener">連結</a>做就可以使用 abp cli 了</p>
+<h2 id="Create-a-New-Project"><a href="#Create-a-New-Project" class="headerlink" title="Create a New Project"></a>Create a New Project</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">abp new Acme.BookStore</span><br></pre></td></tr></table></figure>
+
+<p>這邊沒什麼問題，使用這條指令會自動建立一個 abp 範例專案</p>
+<h2 id="Running-the-solution"><a href="#Running-the-solution" class="headerlink" title="Running the solution"></a>Running the solution</h2><h3 id="準備資料庫"><a href="#準備資料庫" class="headerlink" title="準備資料庫"></a>準備資料庫</h3><p>這邊一開始要在資料庫建立一個 db 並命名為 <code>BookStore</code></p>
+<p>再來要使用 abp 提供的 db migration 工具，這邊也遇到一個問題，由於我是在 m1 mac 使用，使用的環境是</p>
+<ul>
+<li>IDE: Visual Studio for Mac</li>
+<li>DataBase: docker 內裝 <a href="https://hub.docker.com/_/microsoft-azure-sql-edge" target="_blank" rel="noopener">azure-sql-edge</a> (由於 m1 mac 似乎沒辦法裝 mssql server 的 image，azure-sql-edge 是一個支援 arm 的 image，功能與 mssql server 相同但有些限制，但我沒有深入去研究有哪些限制，不過目前來看跑起來跟一班的 mssql server 差不多)</li>
+</ul>
+<p>在官方文件中 connection string 的設定方法是寫這樣</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"ConnectionStrings": &#123;</span><br><span class="line">  "Default": "Server=localhost;Database=BookStore;Trusted_Connection=True"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由於我的 db 有設帳號密碼所以我的版本是這樣</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"ConnectionStrings": &#123;</span><br><span class="line">  "Default": "Server=localhost,1433; Database=BoilerplateDb; User=sa; Password=&lt;YourStrong@Passw0rd&gt;"</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<p>這邊的 <code>Trusted_Connection=True</code> 和 localhost,1433 是我後來修改的</p>
+<p>Trusted_Connection=True  如果有填寫的話會造成下面這個錯誤</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cannot authenticate using Kerberos. Ensure Kerberos has been initialized on the client with &#39;kinit&#39; and a Service Principal Name has been registered for the SQL Server to allow Kerberos authentication. ErrorCode&#x3D;InternalError, Exception&#x3D;Interop+NetSecurityNative+GssApiException: GSSAPI operation failed with error - An unsupported mechanism was requested (unknown mech-code 0 for mech unknown).</span><br></pre></td></tr></table></figure>
+
+<p>要解決的話就是把 Trusted_Connection=True 拿掉即可 <a href="https://stackoverflow.com/a/55715991" target="_blank" rel="noopener">參考連結</a></p>
+<p>Localhost,1433 如果不像這樣指定 port 會連不到，所以只好在後面指定</p>
+<p>上面的 connection string 都設定完後就可以運行 DbMigration 這個專案，成功的話應該會看到下面的內容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">den19980107@den19980107s-MacBook-Pro Acme.BookStore.DbMigrator % dotnet run </span><br><span class="line">[15:22:05 INF] Started database migrations...</span><br><span class="line">[15:22:05 INF] Migrating schema for host database...</span><br><span class="line">[15:22:07 INF] Executing host database seed...</span><br><span class="line">[15:22:10 INF] Successfully completed host database migrations.</span><br><span class="line">[15:22:10 INF] Successfully completed all database migrations.</span><br><span class="line">[15:22:10 INF] You can safely end this process...</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="運行-app"><a href="#運行-app" class="headerlink" title="運行 app"></a>運行 app</h3><p>在 <code>.Web</code> 這個專案下面跑 <code>dotnet run</code> 即可將 app 跑起來，注意的是 .Web 也有一個自己的 connection string，要記得改成跟上面一樣的</p>
+<p>這個步驟沒有遇到什麼問題，很正常的跑起來了</p>
+<p><img src="https://tva1.sinaimg.cn/large/008eGmZEgy1goxc71loohj31gy0qg427.jpg" alt="截圖 2021-03-26 下午3.26.10"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
     <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/10/05/2020-10-05_React_Suspense/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -175,10 +267,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-10-05 16:06:28 / Modified: 17:32:01" itemprop="dateCreated datePublished" datetime="2020-10-05T16:06:28+08:00">2020-10-05</time>
+              <time title="Created: 2020-10-05 16:06:28" itemprop="dateCreated datePublished" datetime="2020-10-05T16:06:28+08:00">2020-10-05</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-11-17 09:09:49" itemprop="dateModified" datetime="2020-11-17T09:09:49+08:00">2020-11-17</time>
+              </span>
 
           
 
@@ -821,80 +919,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
-    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/05/29/2020-05-29-React%E5%9C%A8IE11%E4%B8%8B%E7%84%A1%E6%B3%95%E9%A1%AF%E7%A4%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="賢慧的雞塊">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="賢慧的雞塊">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/29/2020-05-29-React%E5%9C%A8IE11%E4%B8%8B%E7%84%A1%E6%B3%95%E9%A1%AF%E7%A4%BA/" class="post-title-link" itemprop="url">React 在 IE 11 下無法顯示</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-05-29 21:25:37" itemprop="dateCreated datePublished" datetime="2020-05-29T21:25:37+08:00">2020-05-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-10-05 17:21:33" itemprop="dateModified" datetime="2020-10-05T17:21:33+08:00">2020-10-05</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://i.imgur.com/Mjt1pNn.png" alt=""></p>
-<h2 id="錯誤訊息"><a href="#錯誤訊息" class="headerlink" title="錯誤訊息"></a>錯誤訊息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">typeof Symbol&amp;&amp;Symbol.for&amp;&amp;Symbol.for(&quot;react.element&quot;)||60103</span><br></pre></td></tr></table></figure>
-<p>會出現這個問題的原因是因為 react 和 react-dom　所使用的 polyfill　的版本不同<br>需要在 webpack.config =&gt; entry　中的第一行加入所要用的 polyfill　版本</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/05/29/2020-05-29-React%E5%9C%A8IE11%E4%B8%8B%E7%84%A1%E6%B3%95%E9%A1%AF%E7%A4%BA/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -964,7 +988,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-count">15</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -998,7 +1022,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
