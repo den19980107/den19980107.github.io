@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://img.youtube.com/vi/cdsnzfJUqm0/0.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gs8szyzx7wj31ey03mjsf.jpg">
 <meta property="article:published_time" content="2021-07-07T15:23:53.000Z">
-<meta property="article:modified_time" content="2021-07-07T15:30:02.816Z">
+<meta property="article:modified_time" content="2021-07-07T15:32:33.846Z">
 <meta property="article:author" content="賢慧的雞塊">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://img.youtube.com/vi/cdsnzfJUqm0/0.jpg">
@@ -184,7 +184,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-07-07 23:23:53 / Modified: 23:30:02" itemprop="dateCreated datePublished" datetime="2021-07-07T23:23:53+08:00">2021-07-07</time>
+              <time title="Created: 2021-07-07 23:23:53 / Modified: 23:32:33" itemprop="dateCreated datePublished" datetime="2021-07-07T23:23:53+08:00">2021-07-07</time>
             </span>
 
           
@@ -202,6 +202,8 @@
 <h2 id="主文："><a href="#主文：" class="headerlink" title="主文："></a>主文：</h2><p>看了 2019 react conf 剛好看到這個影片</p>
 <p><a href="https://www.youtube.com/watch?v=cdsnzfJUqm0" target="_blank" rel="noopener"><img src="https://img.youtube.com/vi/cdsnzfJUqm0/0.jpg" alt="IMAGE ALT TEXT HERE"></a> </p>
 <p>裡面講到了在前端透過 typescript 讓演講者團隊的產品更加穩固，不在有 js 的一堆老毛病，並且透過 ts 的 type definition，讓整個程式需要重構時更加方便</p>
+<a id="more"></a>
+
 <p>但是，在網路層（前端呼叫 api 的部分），還是會經常發生問題，一般 api 都是使用 rest api，但 rest api 沒有一個正式的回傳格式定義，假設一個使用者去取得一個不屬於他的資料，應該是要回傳 401 因為沒有經過驗證，或是 403 因為此項操作被 forbidden，或甚至 404 因為使用者根本不該知道此項資源存在，開發者要知道這些只能去翻看 api 文件（<del>或者用猜的</del>），並且 call api 回傳的資料不看 api 文件也不知道裡面有什麼，甚至有 api 更新了但文件沒更新，導致開發者完全摸不著頭緒</p>
 <p><del>所以得出了結論 rest api suck</del></p>
 <p>接著又講到了 graphql，graphql 很好的解決了上面那些問題，回傳的資料內容是有詳細定義的，但是畢竟 graphql 只能在 web 使用，如果想要讓 api 共用其他 client side，就可能要把 api 分兩套來寫。</p>
