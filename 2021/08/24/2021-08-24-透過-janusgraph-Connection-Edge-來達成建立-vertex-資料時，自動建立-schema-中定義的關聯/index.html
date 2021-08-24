@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gts13v86gej60vy0ltmzi02.jpg">
 <meta property="og:image" content="https://tva1.sinaimg.cn/large/008i3skNgy1gts145vpvnj60wq0e1tas02.jpg">
 <meta property="article:published_time" content="2021-08-24T09:52:37.000Z">
-<meta property="article:modified_time" content="2021-08-24T09:57:57.606Z">
+<meta property="article:modified_time" content="2021-08-24T09:59:38.362Z">
 <meta property="article:author" content="賢慧的雞塊">
 <meta property="article:tag" content="janusGraph">
 <meta property="article:tag" content="gremlin">
@@ -189,7 +189,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-08-24 17:52:37 / Modified: 17:57:57" itemprop="dateCreated datePublished" datetime="2021-08-24T17:52:37+08:00">2021-08-24</time>
+              <time title="Created: 2021-08-24 17:52:37 / Modified: 17:59:38" itemprop="dateCreated datePublished" datetime="2021-08-24T17:52:37+08:00">2021-08-24</time>
             </span>
 
           
@@ -208,6 +208,8 @@
 <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gts13bum0vj60pl0cu0u102.jpg" alt="image-20210824175548195"></p>
 <p>所以就會想要在 <code>post</code> 這個 edge label 中新增兩個 property 來代表 user 和 blog 之間建立關聯的規則</p>
 <p>可是這會遇到一個問題，在 janusgraph 中，edge label 的 label name 是不能重複的，所以假設今天有另外一組 vertex label 之間的關聯也要叫做 <code>post</code>  ，edge label 的 source 跟 target 就有可能會不同</p>
+<a id="more"></a>
+
 <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gts13gqlucj60r70cu75s02.jpg" alt="image-20210824175600219"></p>
 <p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gts13mm4grj60nn04y0t302.jpg" alt="image-20210824175610872"></p>
 <h2 id="Connection-Edge："><a href="#Connection-Edge：" class="headerlink" title="Connection Edge："></a>Connection Edge：</h2><p>後來有找到可以透過 addConnection 這個方法，定義一個 edge 跟兩個 vertex 之間的關聯</p>
