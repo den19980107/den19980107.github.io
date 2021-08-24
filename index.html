@@ -152,6 +152,150 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2021/08/24/2021-08-24-%E9%80%8F%E9%81%8E-janusgraph-Connection-Edge-%E4%BE%86%E9%81%94%E6%88%90%E5%BB%BA%E7%AB%8B-vertex-%E8%B3%87%E6%96%99%E6%99%82%EF%BC%8C%E8%87%AA%E5%8B%95%E5%BB%BA%E7%AB%8B-schema-%E4%B8%AD%E5%AE%9A%E7%BE%A9%E7%9A%84%E9%97%9C%E8%81%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="賢慧的雞塊">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="賢慧的雞塊">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/08/24/2021-08-24-%E9%80%8F%E9%81%8E-janusgraph-Connection-Edge-%E4%BE%86%E9%81%94%E6%88%90%E5%BB%BA%E7%AB%8B-vertex-%E8%B3%87%E6%96%99%E6%99%82%EF%BC%8C%E8%87%AA%E5%8B%95%E5%BB%BA%E7%AB%8B-schema-%E4%B8%AD%E5%AE%9A%E7%BE%A9%E7%9A%84%E9%97%9C%E8%81%AF/" class="post-title-link" itemprop="url">透過 janusgraph Connection Edge 來達成建立 vertex 資料時，自動建立 schema 中定義的關聯</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-08-24 17:52:37 / Modified: 17:57:57" itemprop="dateCreated datePublished" datetime="2021-08-24T17:52:37+08:00">2021-08-24</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="問題："><a href="#問題：" class="headerlink" title="問題："></a>問題：</h2><p>目前在設定 schema 時，希望可以在 edge label 的 property 中記錄下 source vertex label 與 target vertex label 中的 mapping property，來達到 user 在 data explore insert 資料時，自動建立 edge</p>
+<p>ex : 有兩個 vertex label， <code>user</code> 和 <code>blog</code>，想要在他們之間建立一個 <code>post</code> 的關聯</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gts13bum0vj60pl0cu0u102.jpg" alt="image-20210824175548195"></p>
+<p>所以就會想要在 <code>post</code> 這個 edge label 中新增兩個 property 來代表 user 和 blog 之間建立關聯的規則</p>
+<p>可是這會遇到一個問題，在 janusgraph 中，edge label 的 label name 是不能重複的，所以假設今天有另外一組 vertex label 之間的關聯也要叫做 <code>post</code>  ，edge label 的 source 跟 target 就有可能會不同</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gts13gqlucj60r70cu75s02.jpg" alt="image-20210824175600219"></p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gts13mm4grj60nn04y0t302.jpg" alt="image-20210824175610872"></p>
+<h2 id="Connection-Edge："><a href="#Connection-Edge：" class="headerlink" title="Connection Edge："></a>Connection Edge：</h2><p>後來有找到可以透過 addConnection 這個方法，定義一個 edge 跟兩個 vertex 之間的關聯</p>
+<p>用法如下：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mgmt.addConnection([edge label],[out vertex label],[<span class="keyword">in</span> vertex label])</span><br></pre></td></tr></table></figure>
+
+<p>我們就可以透過這個 connection 來定義兩個 vertex 之間的關聯</p>
+<p>ex：現在有三個 vertex label 和一個 edge label</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gts13v86gej60vy0ltmzi02.jpg" alt="image-20210824175624680"></p>
+<p>透過 addConnection 的方式把 vertex label 之間的關聯建立好，並在 connection Edge 中設定 mapping property</p>
+<p><img src="https://tva1.sinaimg.cn/large/008i3skNgy1gts145vpvnj60wq0e1tas02.jpg" alt="image-20210824175640736"></p>
+<h2 id="新增資料後自動建立-edge-的做法："><a href="#新增資料後自動建立-edge-的做法：" class="headerlink" title="新增資料後自動建立 edge 的做法："></a>新增資料後自動建立 edge 的做法：</h2><ol>
+<li>在 data explorer 中建立一則 tweet 的資料</li>
+<li>取得 <code>tweet</code> 這個 label 的 mappedConnections</li>
+<li>loop 過每個 connection 並看 connection edge 的 incomingVertexLabel 與 outgoingVertex label 是否為 <code>tweet</code></li>
+<li>如果是的話，就看之前塞入的 mapping property 對應的是什麼欄位，在針對 incomingVertexLabel 與 outgoingVertex Label 去建立關聯</li>
+</ol>
+<h2 id="Code："><a href="#Code：" class="headerlink" title="Code："></a>Code：</h2><h3 id="建立-connection"><a href="#建立-connection" class="headerlink" title="建立 connection :"></a>建立 connection :</h3><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// vertex label</span></span><br><span class="line">user = mgmt.getVertexLabel(<span class="string">'user'</span>)</span><br><span class="line">tweet = mgmt.getVertexLabel(<span class="string">'tweet'</span>)</span><br><span class="line">blog = mgmt.getVertexLabel(<span class="string">'blog'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// edge label</span></span><br><span class="line">post = mgmt.getEdgeLabel(<span class="string">'post'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 建立 connection</span></span><br><span class="line">mgmt.addConnection(post,tweet,user);</span><br><span class="line">mgmt.addConnection(post,blog,user);</span><br></pre></td></tr></table></figure>
+
+<h3 id="塞入-mapping-property："><a href="#塞入-mapping-property：" class="headerlink" title="塞入 mapping property："></a>塞入 mapping property：</h3><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 取得 edge</span></span><br><span class="line">post = mgmt.getedgeLabel(<span class="string">'post'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 取得 connection</span></span><br><span class="line">user_post_tweet = post.mappedConnections()[<span class="number">0</span>]</span><br><span class="line">user_post_blog = post.mappedConnections()[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">// 塞入 mapping property</span></span><br><span class="line">user_post_tweet.connectionEdge.property(<span class="string">'source_property'</span>,<span class="string">'id'</span>)</span><br><span class="line">user_post_tweet.connectionEdge.property(<span class="string">'target_property'</span>,<span class="string">'tweet_beling_user_id'</span>)</span><br><span class="line"></span><br><span class="line">user_post_blog.connectionEdge.property(<span class="string">'source_property'</span>,<span class="string">'id'</span>)</span><br><span class="line">user_post_blog.connectionEdge.property(<span class="string">'target_property'</span>,<span class="string">'beling_user_id'</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="取得-connection-中我們塞入的-mapping-property"><a href="#取得-connection-中我們塞入的-mapping-property" class="headerlink" title="取得 connection 中我們塞入的 mapping property"></a>取得 connection 中我們塞入的 mapping property</h3><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gremlin&gt; user_post_blog.connectionEdge.properties()</span><br><span class="line">==&gt;p[~T$SchemaDefinitionDescription-&gt;org.janusgraph.gr...] <span class="comment">// 這個是每個 connection 預設都有的 property</span></span><br><span class="line">==&gt;p[soure_property-&gt;id]</span><br><span class="line">==&gt;p[target_property-&gt;beling_user_id]</span><br></pre></td></tr></table></figure>
+
+<h3 id="取得-vertex-label-的-connection"><a href="#取得-vertex-label-的-connection" class="headerlink" title="取得 vertex label 的 connection"></a>取得 vertex label 的 connection</h3><pre><code class="groovy"><span class="comment">// user 取不到 mapped connection 因為 user 是 incomingVertexLabel</span>
+gremlin&gt; user.mappedConnections()
+
+<span class="comment">// tweet 取到一個 connection</span>
+gremlin&gt; tweet.mappedConnections()
+==&gt;org.janusgraph.core.Connection@<span class="number">5</span>a090f62
+<span class="comment">// 這個 connection 的內容如下</span>
+gremlin&gt; tweet.mappedConnections()[<span class="number">0</span>].properties
+==&gt;<span class="class"><span class="keyword">class</span>=<span class="title">class</span> <span class="title">org</span>.<span class="title">janusgraph</span>.<span class="title">core</span>.<span class="title">Connection</span></span>
+<span class="class">==&gt;<span class="title">connectionEdge</span>=<span class="title">null</span></span>
+<span class="class">==&gt;<span class="title">edgeLabel</span>=<span class="title">post</span></span>
+<span class="class">==&gt;<span class="title">incomingVertexLabel</span>=<span class="title">user</span></span>
+<span class="class">==&gt;<span class="title">outgoingVertexLabel</span>=<span class="title">tweet</span></span>
+<span class="class"></span>
+<span class="class">// <span class="title">blog</span> 取得一個 <span class="title">connection</span></span>
+<span class="class"><span class="title">gremlin</span>&gt; <span class="title">blog</span>.<span class="title">mappedConnections</span>()</span>
+<span class="class">==&gt;<span class="title">org</span>.<span class="title">janusgraph</span>.<span class="title">core</span>.<span class="title">Connection</span>@<span class="title">be164d8</span></span>
+<span class="class">// 這個 <span class="title">connection</span> 的內容如下</span>
+<span class="class"><span class="title">gremlin</span>&gt; <span class="title">blog</span>.<span class="title">mappedConnections</span>()[0].<span class="title">properties</span></span>
+<span class="class">==&gt;<span class="title">class</span>=<span class="title">class</span> <span class="title">org</span>.<span class="title">janusgraph</span>.<span class="title">core</span>.<span class="title">Connection</span></span>
+<span class="class">==&gt;<span class="title">connectionEdge</span>=<span class="title">null</span></span>
+<span class="class">==&gt;<span class="title">edgeLabel</span>=<span class="title">post</span></span>
+<span class="class">==&gt;<span class="title">incomingVertexLabel</span>=<span class="title">user</span></span>
+<span class="class">==&gt;<span class="title">outgoingVertexLabel</span>=<span class="title">blog</span></span>
+<span class="class"></span>
+<span class="class">// <span class="title">post</span> 取得兩個 <span class="title">connection</span></span>
+<span class="class"><span class="title">gremlin</span>&gt; <span class="title">post</span>.<span class="title">mappedConnections</span>()</span>
+<span class="class">==&gt;<span class="title">org</span>.<span class="title">janusgraph</span>.<span class="title">core</span>.<span class="title">Connection</span>@7<span class="title">e52a26b</span></span>
+<span class="class">==&gt;<span class="title">org</span>.<span class="title">janusgraph</span>.<span class="title">core</span>.<span class="title">Connection</span>@2<span class="title">e56b4d</span></span>
+<span class="class"></span>
+<span class="class">// <span class="title">user</span>-&gt;<span class="title">post</span>-&gt;<span class="title">tweet</span> 的 <span class="title">connection</span> 內容如下</span>
+<span class="class"><span class="title">gremlin</span>&gt; <span class="title">post</span>.<span class="title">mappedConnections</span>()[0].<span class="title">properties</span></span>
+<span class="class">==&gt;<span class="title">class</span>=<span class="title">class</span> <span class="title">org</span>.<span class="title">janusgraph</span>.<span class="title">core</span>.<span class="title">Connection</span></span>
+<span class="class">==&gt;<span class="title">connectionEdge</span>=<span class="title">e</span>[1534-<span class="title">el</span>-1<span class="title">th</span>-<span class="title">st</span>][525-~<span class="title">T</span>$<span class="title">SchemaRelated</span>-&gt;1037]</span>
+<span class="class">==&gt;<span class="title">edgeLabel</span>=<span class="title">post</span></span>
+<span class="class">==&gt;<span class="title">incomingVertexLabel</span>=<span class="title">user</span></span>
+<span class="class">==&gt;<span class="title">outgoingVertexLabel</span>=<span class="title">tweet</span></span>
+<span class="class"></span>
+<span class="class">// <span class="title">user</span>-&gt;<span class="title">post</span>-&gt;<span class="title">tweet</span> 中設定的 <span class="title">mapping</span> <span class="title">property</span> 在這邊</span>
+<span class="class"><span class="title">post</span>.<span class="title">mappedConnections</span>()[1].<span class="title">connectionEdge</span>.<span class="title">properties</span>()</span>
+<span class="class">==&gt;<span class="title">p</span>[~<span class="title">T</span>$<span class="title">SchemaDefinitionDescription</span>-&gt;<span class="title">org</span>.<span class="title">janusgraph</span>.<span class="title">gr</span>...]</span>
+<span class="class">==&gt;<span class="title">p</span>[<span class="title">source_property</span>-&gt;<span class="title">id</span>]</span>
+<span class="class">==&gt;<span class="title">p</span>[<span class="title">target_property</span>-&gt;<span class="title">tweet_beling_user_id</span>]</span>
+<span class="class"></span>
+<span class="class">// <span class="title">user</span>-&gt;<span class="title">post</span>-&gt;<span class="title">blog</span> 的 <span class="title">connection</span> 內容如下</span>
+<span class="class"><span class="title">gremlin</span>&gt; <span class="title">post</span>.<span class="title">mappedConnections</span>()[1].<span class="title">properties</span></span>
+<span class="class">==&gt;<span class="title">class</span>=<span class="title">class</span> <span class="title">org</span>.<span class="title">janusgraph</span>.<span class="title">core</span>.<span class="title">Connection</span></span>
+<span class="class">==&gt;<span class="title">connectionEdge</span>=<span class="title">e</span>[15<span class="title">vk</span>-171-1<span class="title">th</span>-<span class="title">st</span>][1549-~<span class="title">T</span>$<span class="title">SchemaRelated</span>-&gt;1037]</span>
+<span class="class">==&gt;<span class="title">edgeLabel</span>=<span class="title">post</span></span>
+<span class="class">==&gt;<span class="title">incomingVertexLabel</span>=<span class="title">user</span></span>
+<span class="class">==&gt;<span class="title">outgoingVertexLabel</span>=<span class="title">blog</span></span>
+<span class="class"></span>
+<span class="class">// <span class="title">user</span>-&gt;<span class="title">post</span>-&gt;<span class="title">blog</span> 中設定的 <span class="title">mapping</span> <span class="title">property</span> 在這邊</span>
+<span class="class"><span class="title">post</span>.<span class="title">mappedConnections</span>()[1].<span class="title">connectionEdge</span>.<span class="title">properties</span>()</span>
+<span class="class">==&gt;<span class="title">p</span>[<span class="title">source_property</span>-&gt;<span class="title">id</span>]</span>
+<span class="class">==&gt;<span class="title">p</span>[<span class="title">target_property</span>-&gt;<span class="title">beling_user_id</span>]</span>
+<span class="class">==&gt;<span class="title">p</span>[~<span class="title">T</span>$<span class="title">SchemaDefinitionDescription</span>-&gt;<span class="title">org</span>.<span class="title">janusgraph</span>.<span class="title">gr</span>...]</span>
+<span class="class">```-</span></code></pre>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
     <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2021/08/19/2021-08-19-JanusGraph-Cheat-Sheet/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -821,83 +965,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
-    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/05/29/2020-05-29-Docker%E5%95%9F%E7%94%A8Load-Balance/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="賢慧的雞塊">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="賢慧的雞塊">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/29/2020-05-29-Docker%E5%95%9F%E7%94%A8Load-Balance/" class="post-title-link" itemprop="url">Docker 啟用 Load Balance</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-05-29 21:30:46" itemprop="dateCreated datePublished" datetime="2020-05-29T21:30:46+08:00">2020-05-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-10-05 17:21:14" itemprop="dateModified" datetime="2020-10-05T17:21:14+08:00">2020-10-05</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="先決條件"><a href="#先決條件" class="headerlink" title="先決條件"></a>先決條件</h1><ul>
-<li>先將專案的 image 設置好，如果不知道怎麼設置 imgae 請參考<a href="https://hackmd.io/7kTvn4WKRQGpGCddJtR-xw" target="_blank" rel="noopener">這篇</a></li>
-</ul>
-<h1 id="介紹"><a href="#介紹" class="headerlink" title="介紹"></a>介紹</h1><p>這個 load balance 是將專案放在 docker 上並且用 docker 上的 nginx 做成 load balance</p>
-<h1 id="開始"><a href="#開始" class="headerlink" title="開始"></a>開始</h1><ul>
-<li>在專案底下新增一個 nginx 的資料夾，並在裡面新增2個檔案
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/05/29/2020-05-29-Docker%E5%95%9F%E7%94%A8Load-Balance/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -967,7 +1034,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-count">18</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
