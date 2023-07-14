@@ -152,6 +152,459 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/10/05/2020-10-05_React_Suspense/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/23033004?v=4">
+      <meta itemprop="name" content="賢慧的雞塊">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="賢慧的雞塊">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/05/2020-10-05_React_Suspense/" class="post-title-link" itemprop="url">React Suspense</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-10-05 16:06:28" itemprop="dateCreated datePublished" datetime="2020-10-05T16:06:28+08:00">2020-10-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-07-07 23:37:55" itemprop="dateModified" datetime="2021-07-07T23:37:55+08:00">2021-07-07</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在 React Conf 2019 介紹了許多關於 <strong>Concurrent Mode</strong>、<strong>Suspense for Data Fetching</strong> 的資訊</p>
+<p>今天我們主要介紹一下 <strong>Suspense for Data Fetching</strong> </p>
+<p>再往下看之前可以先看看官網的<a href="https://reactjs.org/docs/concurrent-mode-intro.html" target="_blank" rel="noopener">文章</a></p>
+<p>今天介紹的主題主要以下面三個題目</p>
+<ul>
+<li><strong>Suspense 是什麼</strong></li>
+<li><strong>Suspense for data fetching</strong></li>
+<li><strong>Supspense 可以做到什麼</strong></li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/10/05/2020-10-05_React_Suspense/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/09/24/2020-09-24_%E5%A6%82%E4%BD%95%E5%B0%87React-Component-%E7%99%BC%E5%B8%83%E5%88%B0-npm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/23033004?v=4">
+      <meta itemprop="name" content="賢慧的雞塊">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="賢慧的雞塊">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/24/2020-09-24_%E5%A6%82%E4%BD%95%E5%B0%87React-Component-%E7%99%BC%E5%B8%83%E5%88%B0-npm/" class="post-title-link" itemprop="url">如何將 React Component 發布到 npm</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-24 09:54:31" itemprop="dateCreated datePublished" datetime="2020-09-24T09:54:31+08:00">2020-09-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-10-05 17:22:31" itemprop="dateModified" datetime="2020-10-05T17:22:31+08:00">2020-10-05</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>最近剛結束公司的一個 issue，要將 gss-webchat (React 專案) 裡面的 component 讓其他 React 專案也可以做使用，在過程中踩到了幾個雷跟大家分享一下</p>
+<h3 id="一開始定義的需求"><a href="#一開始定義的需求" class="headerlink" title="一開始定義的需求"></a>一開始定義的需求</h3><p>原先我們這個專案就有用 webpack build 出一版 es5 的 js 檔提供其他專案(不是使用 react，一般 MVC 的那種)當作外部 js 引入即可直接做使用，這隻 js 有提供幾個功能</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/09/24/2020-09-24_%E5%A6%82%E4%BD%95%E5%B0%87React-Component-%E7%99%BC%E5%B8%83%E5%88%B0-npm/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/07/16/2020-07-16-%E4%BD%BF%E7%94%A8AzureCLI%E9%83%A8%E7%BD%B2WebApp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/23033004?v=4">
+      <meta itemprop="name" content="賢慧的雞塊">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="賢慧的雞塊">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/16/2020-07-16-%E4%BD%BF%E7%94%A8AzureCLI%E9%83%A8%E7%BD%B2WebApp/" class="post-title-link" itemprop="url">部署到 Azure Web App 的方式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-07-16 17:01:43" itemprop="dateCreated datePublished" datetime="2020-07-16T17:01:43+08:00">2020-07-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-10-05 17:22:23" itemprop="dateModified" datetime="2020-10-05T17:22:23+08:00">2020-10-05</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="部署到-Azure-Web-App-的方式"><a href="#部署到-Azure-Web-App-的方式" class="headerlink" title="部署到 Azure Web App 的方式"></a>部署到 Azure Web App 的方式</h1><h2 id="使用-Azure-CLI-部署-web-app"><a href="#使用-Azure-CLI-部署-web-app" class="headerlink" title="使用 Azure CLI 部署 web app"></a>使用 Azure CLI 部署 web app</h2><p>目前有找到一個<a href="https://microsoft.github.io/AzureTipsAndTricks/blog/tip19.html" target="_blank" rel="noopener">範例</a>，但是部署上去的過程有問題，官網的 <a href="https://github.com/microsoft/vscode-azureappservice/blob/2b146bd724f3bb1856fe426a941b80f2826d41c3/resources/deploymentScripts/linux-default.sh" target="_blank" rel="noopener">deployment script</a></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07/16/2020-07-16-%E4%BD%BF%E7%94%A8AzureCLI%E9%83%A8%E7%BD%B2WebApp/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/06/05/2020-06-05-%E5%A6%82%E4%BD%95%E5%9C%A8BotFrameworkComposer%E5%85%A7%E4%BD%BF%E7%94%A8LUIS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/23033004?v=4">
+      <meta itemprop="name" content="賢慧的雞塊">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="賢慧的雞塊">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/06/05/2020-06-05-%E5%A6%82%E4%BD%95%E5%9C%A8BotFrameworkComposer%E5%85%A7%E4%BD%BF%E7%94%A8LUIS/" class="post-title-link" itemprop="url">如何在 Bot Framework Composer 內使用 LUIS</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-06-05 17:04:11" itemprop="dateCreated datePublished" datetime="2020-06-05T17:04:11+08:00">2020-06-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-10-05 17:21:45" itemprop="dateModified" datetime="2020-10-05T17:21:45+08:00">2020-10-05</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="如何在-bot-composer-內使用-Luis"><a href="#如何在-bot-composer-內使用-Luis" class="headerlink" title="如何在 bot composer  內使用 Luis"></a>如何在 bot composer  內使用 Luis</h1><ol>
+<li><p>前往 Luis <a href="https://www.luis.ai/" target="_blank" rel="noopener">官網</a>，使用微軟帳號登入</p>
+</li>
+<li><p>點選 <code>New app for conversation</code></p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfhftk5ttaj31hd0q8mz9.jpg" alt="截圖 2020-06-05 下午2.49.13"></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/06/05/2020-06-05-%E5%A6%82%E4%BD%95%E5%9C%A8BotFrameworkComposer%E5%85%A7%E4%BD%BF%E7%94%A8LUIS/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/06/05/2020-06-05-LUIS%E5%BE%AE%E8%BB%9F%E7%9A%84NatureLanguageLearning/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/23033004?v=4">
+      <meta itemprop="name" content="賢慧的雞塊">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="賢慧的雞塊">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/06/05/2020-06-05-LUIS%E5%BE%AE%E8%BB%9F%E7%9A%84NatureLanguageLearning/" class="post-title-link" itemprop="url">LUIS - 微軟的 Nature Language Processing</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-06-05 17:01:43" itemprop="dateCreated datePublished" datetime="2020-06-05T17:01:43+08:00">2020-06-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-10-05 17:22:18" itemprop="dateModified" datetime="2020-10-05T17:22:18+08:00">2020-10-05</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="在-Bot-Composer-中使用-intent-與-entity"><a href="#在-Bot-Composer-中使用-intent-與-entity" class="headerlink" title="在 Bot Composer 中使用 intent 與 entity"></a>在 <strong>Bot Composer</strong> 中使用 intent 與 entity</h2><ol>
+<li><p>點擊 New Trigger 建立新的進入口</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gfhftc3ah5j31hd0q8jvv.jpg" alt="截圖 2020-06-05 下午3.14.49"></p>
+</li>
+<li><p>選取第一個選項 <code>intent recognized</code> </p>
+</li>
+</ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/06/05/2020-06-05-LUIS%E5%BE%AE%E8%BB%9F%E7%9A%84NatureLanguageLearning/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/05/29/2020-05-29-%E5%9C%A8Docker%E4%B8%8A%E4%BD%BF%E7%94%A8mongodb/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/23033004?v=4">
+      <meta itemprop="name" content="賢慧的雞塊">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="賢慧的雞塊">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/05/29/2020-05-29-%E5%9C%A8Docker%E4%B8%8A%E4%BD%BF%E7%94%A8mongodb/" class="post-title-link" itemprop="url">在 Docker 上使用 mongodb</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-05-29 21:32:06" itemprop="dateCreated datePublished" datetime="2020-05-29T21:32:06+08:00">2020-05-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-10-05 17:20:53" itemprop="dateModified" datetime="2020-10-05T17:20:53+08:00">2020-10-05</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ul>
+<li>下載 mongodb 映像檔<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull mongo:4.1</span><br></pre></td></tr></table></figure></li>
+<li>run docker images 看有沒有下載成功<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/05/29/2020-05-29-%E5%9C%A8Docker%E4%B8%8A%E4%BD%BF%E7%94%A8mongodb/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
     <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/05/29/2020-05-29-Docker%E5%95%9F%E7%94%A8Load-Balance/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -183,7 +636,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-10-05 17:21:14" itemprop="dateModified" datetime="2020-10-05T17:21:14+08:00">2020-10-05</time>
+                <time title="Modified: 2023-07-14 16:52:03" itemprop="dateModified" datetime="2023-07-14T16:52:03+08:00">2023-07-14</time>
               </span>
 
           
@@ -202,7 +655,7 @@
 </ul>
 <h1 id="介紹"><a href="#介紹" class="headerlink" title="介紹"></a>介紹</h1><p>這個 load balance 是將專案放在 docker 上並且用 docker 上的 nginx 做成 load balance</p>
 <h1 id="開始"><a href="#開始" class="headerlink" title="開始"></a>開始</h1><ul>
-<li>在專案底下新增一個 nginx 的資料夾，並在裡面新增2個檔案
+<li><p>在專案底下新增一個 nginx 的資料夾，並在裡面新增 2 個檔案</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/05/29/2020-05-29-Docker%E5%95%9F%E7%94%A8Load-Balance/#more" rel="contents">
@@ -448,307 +901,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
-    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/05/29/2020-05-29_%E5%A6%82%E4%BD%95%E5%B0%87node-js-app-%E9%83%A8%E7%BD%B2%E5%88%B0google-cloud-platform/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/23033004?v=4">
-      <meta itemprop="name" content="賢慧的雞塊">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="賢慧的雞塊">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/29/2020-05-29_%E5%A6%82%E4%BD%95%E5%B0%87node-js-app-%E9%83%A8%E7%BD%B2%E5%88%B0google-cloud-platform/" class="post-title-link" itemprop="url">如何將node.js app 部署到google cloud platform</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-05-29 20:56:59 / Modified: 21:44:09" itemprop="dateCreated datePublished" datetime="2020-05-29T20:56:59+08:00">2020-05-29</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="先決條件"><a href="#先決條件" class="headerlink" title="先決條件"></a>先決條件</h2><ul>
-<li>確認是否有 google cloud platform 付費會員或免費試用會員</li>
-<li>在平台中新增一個專案</li>
-</ul>
-<p><img src="https://i.imgur.com/dXyYPDq.jpg" alt=""></p>
-<ul>
-<li>安裝 gcloud sdk <a href="https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-245.0.0-darwin-x86_64.tar.gz" target="_blank" rel="noopener">下載網址</a></li>
-</ul>
-<p>可以在 terminal 輸入 gcloud 看看是否會輸出下面的畫面</p>
-<p><img src="https://i.imgur.com/EpimuOo.jpg" alt=""></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/05/29/2020-05-29_%E5%A6%82%E4%BD%95%E5%B0%87node-js-app-%E9%83%A8%E7%BD%B2%E5%88%B0google-cloud-platform/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
-    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/05/29/2020-05-29_Heroku%E9%83%A8%E7%BD%B2mern-stack-app/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/23033004?v=4">
-      <meta itemprop="name" content="賢慧的雞塊">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="賢慧的雞塊">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/29/2020-05-29_Heroku%E9%83%A8%E7%BD%B2mern-stack-app/" class="post-title-link" itemprop="url">Heroku 部署 mern stackapp</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-05-29 20:55:24" itemprop="dateCreated datePublished" datetime="2020-05-29T20:55:24+08:00">2020-05-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-10-05 17:20:20" itemprop="dateModified" datetime="2020-10-05T17:20:20+08:00">2020-10-05</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="in-package-json-add-below"><a href="#in-package-json-add-below" class="headerlink" title="in package.json add below"></a>in package.json add below</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">"scripts": &#123;</span><br><span class="line">    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm run build &amp;&amp; npm install --prefix client &amp;&amp; npm run build --prefix client"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/05/29/2020-05-29_Heroku%E9%83%A8%E7%BD%B2mern-stack-app/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
-    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/05/29/2020-05-29_Nginx%E7%84%A1%E6%B3%95%E5%82%B3%E8%BC%B8%E5%A4%A7%E6%AA%94%E6%A1%88%E5%95%8F%E9%A1%8C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/23033004?v=4">
-      <meta itemprop="name" content="賢慧的雞塊">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="賢慧的雞塊">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/29/2020-05-29_Nginx%E7%84%A1%E6%B3%95%E5%82%B3%E8%BC%B8%E5%A4%A7%E6%AA%94%E6%A1%88%E5%95%8F%E9%A1%8C/" class="post-title-link" itemprop="url">Nginx 無法傳輸大檔案問題</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-05-29 20:54:10" itemprop="dateCreated datePublished" datetime="2020-05-29T20:54:10+08:00">2020-05-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-10-05 17:20:29" itemprop="dateModified" datetime="2020-10-05T17:20:29+08:00">2020-10-05</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在做 icoding 的時候常常會需要上傳影片到平台上，本機測試的時候影片可以上傳成功，但當網站部署到伺服器後，上傳影片卻失敗，資料庫一直沒有出現影片的資料</p>
-<h2 id="前端噴的錯誤訊息"><a href="#前端噴的錯誤訊息" class="headerlink" title="前端噴的錯誤訊息"></a>前端噴的錯誤訊息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">413 Request Entity Too Large</span><br></pre></td></tr></table></figure>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/05/29/2020-05-29_Nginx%E7%84%A1%E6%B3%95%E5%82%B3%E8%BC%B8%E5%A4%A7%E6%AA%94%E6%A1%88%E5%95%8F%E9%A1%8C/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
-    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2020/05/29/2020-05-29_Nginx%E8%A3%BD%E4%BD%9CHomeServer/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/23033004?v=4">
-      <meta itemprop="name" content="賢慧的雞塊">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="賢慧的雞塊">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/05/29/2020-05-29_Nginx%E8%A3%BD%E4%BD%9CHomeServer/" class="post-title-link" itemprop="url">Nginx 製作 HomeServer</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-05-29 20:50:48" itemprop="dateCreated datePublished" datetime="2020-05-29T20:50:48+08:00">2020-05-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-10-05 17:20:43" itemprop="dateModified" datetime="2020-10-05T17:20:43+08:00">2020-10-05</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <ol>
-<li><p>安裝 <a href="http://nginx.org/en/download.html" target="_blank" rel="noopener">nginx</a></p>
-</li>
-<li><p>on 起你的 app (假設為一個 node server on 在 localhost:5000)</p>
-</li>
-<li><p>設定 nginx.conf (在下載下來的 nginx根目錄/conf 裡面) 下面的設定檔的意思是監聽 port 80，如果有從 80 進來的，轉跳到 port 5000</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/05/29/2020-05-29_Nginx%E8%A3%BD%E4%BD%9CHomeServer/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -816,14 +972,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -850,7 +1006,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
