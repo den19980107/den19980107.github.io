@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+<meta name="google-site-verification" content="QAo6YRDFuJzlaT-cDxw05ccSr7wt3h1iwbmffshWUOY" />
+<script data-ad-client="ca-pub-8963208625930704" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"den19980107.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="前言正當我以為目前的架構可以滿足需求時，登登～需求變更～～～ 上面的長官們希望 Worker 可以當做一個共用服務，讓其他團隊可以訂閱 Worker 解析後的設備訊息來做其他應用 這就代表我們不能將資料的順序在 Archiver 那邊處理，而是 Worker 發送出來的設備訊息就需要按照順序了 所以 Worker 不能採用競爭消費的方式爭搶訊息來處理，因為這會導致同一設備的訊息順序錯亂，如下圖">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[從零開始做水平擴展] 6.以為結束了嗎">
+<meta property="og:url" content="https://den19980107.github.io/2024/02/16/%E5%BE%9E%E9%9B%B6%E9%96%8B%E5%A7%8B%E5%81%9A%E6%B0%B4%E5%B9%B3%E6%93%B4%E5%B1%95-6-%E4%BB%A5%E7%82%BA%E7%B5%90%E6%9D%9F%E4%BA%86%E5%97%8E/index.html">
+<meta property="og:site_name" content="賢慧的雞塊">
+<meta property="og:description" content="前言正當我以為目前的架構可以滿足需求時，登登～需求變更～～～ 上面的長官們希望 Worker 可以當做一個共用服務，讓其他團隊可以訂閱 Worker 解析後的設備訊息來做其他應用 這就代表我們不能將資料的順序在 Archiver 那邊處理，而是 Worker 發送出來的設備訊息就需要按照順序了 所以 Worker 不能採用競爭消費的方式爭搶訊息來處理，因為這會導致同一設備的訊息順序錯亂，如下圖">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://i.imgur.com/1nachp3.gif">
+<meta property="og:image" content="https://i.imgur.com/Obfh8c7.png">
+<meta property="og:image" content="https://i.imgur.com/GDqTsgo.png">
+<meta property="og:image" content="https://i.imgur.com/3VE9VWs.png">
+<meta property="og:image" content="https://i.imgur.com/mM8VABV.png">
+<meta property="og:image" content="https://i.imgur.com/DjwI2BO.png">
+<meta property="og:image" content="https://i.imgur.com/pvHA6yM.png">
+<meta property="og:image" content="https://i.imgur.com/Xi2Hgbq.png">
+<meta property="og:image" content="https://i.imgur.com/44fFbsp.png">
+<meta property="og:image" content="https://i.imgur.com/IZXodka.png">
+<meta property="og:image" content="https://i.imgur.com/vIP6j9w.png">
+<meta property="og:image" content="https://i.imgur.com/SwKstnL.png">
+<meta property="og:image" content="https://i.imgur.com/CS6ZhEt.png">
+<meta property="og:image" content="https://i.imgur.com/IhGbixb.png">
+<meta property="og:image" content="https://i.imgur.com/RwXBIkO.png">
+<meta property="og:image" content="https://i.imgur.com/TWR66et.png">
+<meta property="og:image" content="https://i.imgur.com/WHiXQp5.png">
+<meta property="og:image" content="https://i.imgur.com/SlfquHm.png">
+<meta property="og:image" content="https://i.imgur.com/5b0iChK.png">
+<meta property="og:image" content="https://i.imgur.com/TbIiyQt.png">
+<meta property="og:image" content="https://i.imgur.com/o2774sB.png">
+<meta property="og:image" content="https://i.imgur.com/rmBQXR5.png">
+<meta property="og:image" content="https://i.imgur.com/JRoQHHV.png">
+<meta property="og:image" content="https://i.imgur.com/aBpQcuk.png">
+<meta property="og:image" content="https://i.imgur.com/q2XCiwB.png">
+<meta property="og:image" content="https://i.imgur.com/aE3f5hC.png">
+<meta property="og:image" content="https://i.imgur.com/XgZkSlg.png">
+<meta property="og:image" content="https://i.imgur.com/XBDUkPk.png">
+<meta property="og:image" content="https://i.imgur.com/q5pzbUc.png">
+<meta property="og:image" content="https://i.imgur.com/SBe1RBP.png">
+<meta property="og:image" content="https://i.imgur.com/9IbVV6m.png">
+<meta property="article:published_time" content="2024-02-16T07:55:30.000Z">
+<meta property="article:modified_time" content="2024-02-16T08:54:42.563Z">
+<meta property="article:author" content="賢慧的雞塊">
+<meta property="article:tag" content="horizontal-scale">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.imgur.com/1nachp3.gif">
+
+<link rel="canonical" href="https://den19980107.github.io/2024/02/16/%E5%BE%9E%E9%9B%B6%E9%96%8B%E5%A7%8B%E5%81%9A%E6%B0%B4%E5%B9%B3%E6%93%B4%E5%B1%95-6-%E4%BB%A5%E7%82%BA%E7%B5%90%E6%9D%9F%E4%BA%86%E5%97%8E/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>[從零開始做水平擴展] 6.以為結束了嗎 | 賢慧的雞塊</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">賢慧的雞塊</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2024/02/16/%E5%BE%9E%E9%9B%B6%E9%96%8B%E5%A7%8B%E5%81%9A%E6%B0%B4%E5%B9%B3%E6%93%B4%E5%B1%95-6-%E4%BB%A5%E7%82%BA%E7%B5%90%E6%9D%9F%E4%BA%86%E5%97%8E/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/23033004?v=4">
+      <meta itemprop="name" content="賢慧的雞塊">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="賢慧的雞塊">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          [從零開始做水平擴展] 6.以為結束了嗎
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-02-16 15:55:30 / Modified: 16:54:42" itemprop="dateCreated datePublished" datetime="2024-02-16T15:55:30+08:00">2024-02-16</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>正當我以為目前的架構可以滿足需求時，登登～需求變更～～～</p>
+<p>上面的長官們希望 Worker 可以當做一個共用服務，讓其他團隊可以訂閱 Worker 解析後的設備訊息來做其他應用</p>
+<p>這就代表我們不能將資料的順序在 Archiver 那邊處理，而是 Worker 發送出來的設備訊息就需要按照順序了</p>
+<p>所以 Worker 不能採用競爭消費的方式爭搶訊息來處理，因為這會導致同一設備的訊息順序錯亂，如下圖</p>
+<p><img src="https://i.imgur.com/1nachp3.gif" alt="螢幕錄影 2024-02-16 下午4.02.13"></p>
+<p>為了解決這個問題，我們需要做到兩件事情</p>
+<ol>
+<li>讓同一個 Worker 處理同一個 Device 的訊息</li>
+<li>需要一個 Load Balancer 的角色，在 Worker 增加或減少時重新分配設備道不同 Worker 上，且分配的過程中保證順序性</li>
+</ol>
+<h2 id="Dispatcher-處理-Worker-增加"><a href="#Dispatcher-處理-Worker-增加" class="headerlink" title="Dispatcher 處理 Worker 增加"></a>Dispatcher 處理 Worker 增加</h2><p>我們新開發了一個微服務，用來分配設備到不同 Worker 以及處理 Worker 增加/減少時的重新分配，整個流程大致如下</p>
+<ol>
+<li><p>起始狀態，Dispatcher 會從 db 中讀取所有註冊過的設備來得知目前有哪些設備，且在沒有 Worker 啟動的情況下，Dispatcher 不會去接收設備的訊息，會讓訊息堆積在 RabbitMQ 中</p>
+<p><img src="https://i.imgur.com/Obfh8c7.png" alt="截圖 2024-02-16 下午4.14.00"></p>
+</li>
+<li><p>第一個 Worker 啟動時</p>
+<p><img src="https://i.imgur.com/GDqTsgo.png" alt="截圖 2024-02-16 下午4.16.04"></p>
+</li>
+<li><p>每個 Worker 會有自己的 id，並用自己的 id 當作前綴，去訂閱設備的訊息，前綴的目的是方便 Dispatcher 知道要將設備的訊息傳到哪個 Worker 上</p>
+<p><img src="https://i.imgur.com/3VE9VWs.png" alt="截圖 2024-02-16 下午4.16.30"></p>
+</li>
+<li><p>之後 Worker 會到 ETCD 註冊自己，在 ETCD 中會有一個 key 叫做 Worker List，裡面會有目前起來的 Worker 的 id 清單</p>
+<p><img src="https://i.imgur.com/mM8VABV.png" alt="截圖 2024-02-16 下午4.17.54"></p>
+</li>
+<li><p>Dispatcher 會去訂閱 ETCD，當 Worker List 這個 key 有異動時，Dispatcher 就知道 Worker 是變多還變少，以目前的例子 Dispatcher 會知道有一個 id 是 A 的 Worker 啟動了</p>
+<p><img src="https://i.imgur.com/DjwI2BO.png" alt="截圖 2024-02-16 下午4.19.43"></p>
+</li>
+<li><p>之後 Dispatcher 會將設備根據目前有幾個 Worker 來做分配，因為原本沒有 Worker，所以現在會將全部的設備分配到 Worker A 上</p>
+<p><img src="https://i.imgur.com/pvHA6yM.png" alt="截圖 2024-02-16 下午4.21.06"></p>
+</li>
+<li><p>之後 Dispatcher 就會開始訂閱消息，並根據設備分配到的 Worker id 將 topic 加上 Worker id 的前綴，分配到該 Worker 上</p>
+<p><img src="https://i.imgur.com/Xi2Hgbq.png" alt="截圖 2024-02-16 下午4.22.14"></p>
+</li>
+<li><p>假設現在系統附載變大，K8s 自動產生了一個新的 Worker B</p>
+<p><img src="https://i.imgur.com/44fFbsp.png" alt="截圖 2024-02-16 下午4.24.05"></p>
+</li>
+<li><p>Worker B 一樣會先用自己的 id 當作前綴，去訂閱 RabbitMQ</p>
+<p><img src="https://i.imgur.com/IZXodka.png" alt="截圖 2024-02-16 下午4.24.32"></p>
+</li>
+<li><p>然後會到 ETCD 註冊</p>
+<p><img src="https://i.imgur.com/vIP6j9w.png" alt="截圖 2024-02-16 下午4.26.01"></p>
+</li>
+<li><p>Dispatcher 會收到 Worker B 註冊的通知</p>
+<p><img src="https://i.imgur.com/SwKstnL.png" alt="截圖 2024-02-16 下午4.26.25"></p>
+</li>
+<li><p>由於現在有兩個 Worker，所以 Dispatcher 會對設備進行重新分配，原本 <code>1,2,3,4,5</code> 都是分配給 A，Dispatcher 會將 <code>4,5</code> 分配給 B，這邊都只是先分配而已，還沒有完成</p>
+<p><img src="https://i.imgur.com/CS6ZhEt.png" alt="截圖 2024-02-16 下午4.27.43"></p>
+</li>
+<li><p>之後 Dispatcher 會一個一個設備去做轉移，首先先轉移設備 <code>4</code>，Dispatcher 會建立一個 queue 給設備 4，在轉移過程中設備 4 的訊息都會先暫存到這個 queue 中</p>
+<p><img src="https://i.imgur.com/IhGbixb.png" alt="截圖 2024-02-16 下午4.29.41"></p>
+</li>
+<li><p>之後 Dispatcher 會發送一個 device 4 terminate 的訊息給 Worker A，當 Worker A 接收到這個訊息時代表從這個訊息之後就不會有 device 4 的訊息再傳過來了</p>
+<p><img src="https://i.imgur.com/RwXBIkO.png" alt="截圖 2024-02-16 下午4.29.56"></p>
+</li>
+<li><p>為了確保同一個設備只會被同一個 Worker 處理，所以我們會讓 Worker A 收到 terminate 訊息時回傳一個 ack 的訊息給 Dispatcher，這樣就能保證 Worker A 已經沒有處理 device 4 的訊息，在等待 ack 的過程中，device 4 的訊息還是會繼續上傳，所以會保存在 Dispatcher 的 queue 中</p>
+<p><img src="https://i.imgur.com/TWR66et.png" alt="截圖 2024-02-16 下午4.31.24"></p>
+</li>
+<li><p>當 Worker A 收到 terminate，代表 device 4 的訊息都處理完了，Worker A 會發送一個 ack 的 notify 給 Dispatcher</p>
+<p><img src="https://i.imgur.com/WHiXQp5.png" alt="截圖 2024-02-16 下午4.35.29"></p>
+</li>
+<li><p>此時，Dispatcher 就能將暫存的 device 4 訊息交給 Worker B 處理，且不用擔心同一個設備的訊息被兩個 Worker 同時處理導致順序不正確的問題了</p>
+<p><img src="https://i.imgur.com/SlfquHm.png" alt="截圖 2024-02-16 下午4.35.37"></p>
+</li>
+<li><p>當然，device 5 的處理方式也是一樣的</p>
+<p><img src="https://i.imgur.com/5b0iChK.png" alt="截圖 2024-02-16 下午4.37.18"></p>
+</li>
+</ol>
+<h2 id="Disaptcher-處理-Worker-減少"><a href="#Disaptcher-處理-Worker-減少" class="headerlink" title="Disaptcher 處理 Worker 減少"></a>Disaptcher 處理 Worker 減少</h2><ol>
+<li><p>延續上面的例子，當負載變小，K8s 想要將 Worker B 關閉，此時 Worker B 會做 Graceful shutdown，而不是馬上關閉</p>
+<p><img src="https://i.imgur.com/TbIiyQt.png" alt="截圖 2024-02-16 下午4.39.58"></p>
+</li>
+<li><p>Graceful Shutdown 的第一步就是先去 ETCD 取消註冊</p>
+<p><img src="https://i.imgur.com/o2774sB.png" alt="截圖 2024-02-16 下午4.40.30"></p>
+</li>
+<li><p>Dispatcher 就會收到通知</p>
+<p><img src="https://i.imgur.com/rmBQXR5.png" alt="截圖 2024-02-16 下午4.40.36"></p>
+</li>
+<li><p>Dispatcher 會重新分配設備，將 device 4 與 device 5 分配給 Worker A，一樣，這只是分配而已，還沒轉移完成</p>
+<p><img src="https://i.imgur.com/JRoQHHV.png" alt="截圖 2024-02-16 下午4.41.00"></p>
+</li>
+<li><p>之後的作法幾乎跟 Worker 增加時轉移設備的流程一樣，先轉移 device 4</p>
+<p><img src="https://i.imgur.com/aBpQcuk.png" alt="截圖 2024-02-16 下午4.42.08"></p>
+</li>
+<li><p>通知 Ｗ orker B device 4 要被轉移了</p>
+<p><img src="https://i.imgur.com/q2XCiwB.png" alt="截圖 2024-02-16 下午4.42.38"></p>
+</li>
+<li><p>等待 Worker B 回應時先將 device 4 訊息暫存</p>
+<p><img src="https://i.imgur.com/aE3f5hC.png" alt="截圖 2024-02-16 下午4.43.44"></p>
+</li>
+<li><p>Worker B 收到後回傳 Ack</p>
+<p><img src="https://i.imgur.com/XgZkSlg.png" alt="截圖 2024-02-16 下午4.44.26"></p>
+</li>
+<li><p>Dispatcher 收到 Ack，將暫存的訊息轉交由 Worker A 處理</p>
+<p><img src="https://i.imgur.com/XBDUkPk.png" alt="截圖 2024-02-16 下午4.45.20"></p>
+</li>
+<li><p>device 5 的處理流程也是一樣的</p>
+<p><img src="https://i.imgur.com/q5pzbUc.png" alt="截圖 2024-02-16 下午4.45.43"></p>
+</li>
+<li><p>當 Dispatcher 轉移完所有 Worker B 的設備後，Dispatcher 會發送一個消息通知 Worker B 可以將自己關掉了</p>
+<p><img src="https://i.imgur.com/SBe1RBP.png" alt="截圖 2024-02-16 下午4.46.30"></p>
+</li>
+<li><p>Worker B 收到訊息後就會把自己關掉</p>
+<p><img src="https://i.imgur.com/9IbVV6m.png" alt="截圖 2024-02-16 下午4.46.40"></p>
+</li>
+</ol>
+<h2 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h2><p>透過新開發的這個微服務，我們可以讓設備的訊息保持一致的順序，讓其他團隊可以更方便的使用我們的 Worker</p>
+<p>當然，目前看起來 Dispatcher 會是一個 single point of failure，我也會繼續想一下這個部分有沒有改進的方式，之後如果有其他更新會再寫上來</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/horizontal-scale/" rel="tag"># horizontal-scale</a>
+          </div>
+
+        
+
+
+<div>
+  <section id="comments" class="comments">
+    <style>
+      .utterances{max-width: 100%;}
+    </style>
+    <script src="https://utteranc.es/client.js"
+      repo="den19980107/utterances"
+      issue-term="pathname"
+      theme="photon-dark"
+      crossorigin="anonymous"
+      async>
+    </script>
+  </section>
+</div>
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/07/14/%E5%BE%9E%E9%9B%B6%E9%96%8B%E5%A7%8B%E5%81%9A%E6%B0%B4%E5%B9%B3%E6%93%B4%E5%B1%95-5-%E6%9C%80%E7%B5%82%E6%9E%B6%E6%A7%8B/" rel="prev" title="[從零開始做水平擴展] 5.最終架構">
+      <i class="fa fa-chevron-left"></i> [從零開始做水平擴展] 5.最終架構
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dispatcher-處理-Worker-增加"><span class="nav-number">2.</span> <span class="nav-text">Dispatcher 處理 Worker 增加</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Disaptcher-處理-Worker-減少"><span class="nav-number">3.</span> <span class="nav-text">Disaptcher 處理 Worker 減少</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#總結"><span class="nav-number">4.</span> <span class="nav-text">總結</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="賢慧的雞塊"
+      src="https://avatars.githubusercontent.com/u/23033004?v=4">
+  <p class="site-author-name" itemprop="name">賢慧的雞塊</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">賢慧的雞塊</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
