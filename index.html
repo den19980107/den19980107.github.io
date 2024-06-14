@@ -152,6 +152,76 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2024/06/14/Azure-IoTHub-Gateway-v2-protocol-error-received-flow-without-next-incoming-id-after-session-established/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/23033004?v=4">
+      <meta itemprop="name" content="賢慧的雞塊">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="賢慧的雞塊">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2024/06/14/Azure-IoTHub-Gateway-v2-protocol-error-received-flow-without-next-incoming-id-after-session-established/" class="post-title-link" itemprop="url">Azure IoTHub Gateway v2 - protocol error: received flow without next-incoming-id after session established</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2024-06-14 08:44:45 / Modified: 08:47:10" itemprop="dateCreated datePublished" datetime="2024-06-14T08:44:45+08:00">2024-06-14</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Description"><a href="#Description" class="headerlink" title="Description:"></a>Description:</h2><p>we facing the azure iot hub bug today,</p>
+<p>after upgrade the azure iot hub gateway to <code>GWV2</code> version, the dc-traffic-forwarder servcie can no longer retreive data from azure iot hub</p>
+<p><img src="https://i.imgur.com/ApAZzWx.png" alt="image-20240612105900760"></p>
+<p>the error message from the azure iot hub is:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">panic: subscribe azure iot event failed, err: protocol error: received flow without next-incoming-id after session established</span><br><span class="line"></span><br><span class="line">goroutine 13 [running]:</span><br><span class="line">dc-traffic-forwarder/internal/iothub.(*IotHubBroker).Subscribe.func1.1()</span><br><span class="line">        /go/src/dc-traffic-forwarder/internal/iothub/init.go:90 +0x1f9</span><br><span class="line">created by dc-traffic-forwarder/internal/iothub.(*IotHubBroker).Subscribe.func1</span><br><span class="line">        /go/src/dc-traffic-forwarder/internal/iothub/init.go:48 +0xfb</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2024/06/14/Azure-IoTHub-Gateway-v2-protocol-error-received-flow-without-next-incoming-id-after-session-established/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
     <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2024/02/16/%E5%BE%9E%E9%9B%B6%E9%96%8B%E5%A7%8B%E5%81%9A%E6%B0%B4%E5%B9%B3%E6%93%B4%E5%B1%95-6-%E4%BB%A5%E7%82%BA%E7%B5%90%E6%9D%9F%E4%BA%86%E5%97%8E/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -797,75 +867,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
-    <link itemprop="mainEntityOfPage" href="https://den19980107.github.io/2021/07/07/2021-07-07-restful-react-%E6%90%AD%E9%85%8D-abp-io-%E8%87%AA%E5%8B%95%E7%94%A2%E7%94%9F%E5%89%8D%E7%AB%AF-api-script/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://avatars.githubusercontent.com/u/23033004?v=4">
-      <meta itemprop="name" content="賢慧的雞塊">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="賢慧的雞塊">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/07/07/2021-07-07-restful-react-%E6%90%AD%E9%85%8D-abp-io-%E8%87%AA%E5%8B%95%E7%94%A2%E7%94%9F%E5%89%8D%E7%AB%AF-api-script/" class="post-title-link" itemprop="url">restful-react 搭配 abp.io 自動產生前端 api script</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2021-07-07 23:23:53 / Modified: 23:38:27" itemprop="dateCreated datePublished" datetime="2021-07-07T23:23:53+08:00">2021-07-07</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h2><p>最近在找 <a href="http://abp.io" target="_blank" rel="noopener">abp.io</a> 的 service proxy 替代方式，因為原本只支援 angular，想說要找看看有沒有同樣利用 open api 產生前端 script 給 react 的方法，所以才有了這篇文</p>
-<h2 id="主文："><a href="#主文：" class="headerlink" title="主文："></a>主文：</h2><p>看了 2019 react conf 剛好看到這個影片</p>
-<p><a href="https://www.youtube.com/watch?v=cdsnzfJUqm0" target="_blank" rel="noopener"><img src="https://img.youtube.com/vi/cdsnzfJUqm0/0.jpg" alt="IMAGE ALT TEXT HERE"></a> </p>
-<p>裡面講到了在前端透過 typescript 讓演講者團隊的產品更加穩固，不在有 js 的一堆老毛病，並且透過 ts 的 type definition，讓整個程式需要重構時更加方便</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/07/07/2021-07-07-restful-react-%E6%90%AD%E9%85%8D-abp-io-%E8%87%AA%E5%8B%95%E7%94%A2%E7%94%9F%E5%89%8D%E7%AB%AF-api-script/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -937,7 +938,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
